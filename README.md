@@ -7,9 +7,11 @@ This repository stores the configuration for the opencode AI agent running on th
 ```
 opencode-config/
 ├── opencode.json          # MCP (Model Context Protocol) configuration
-├── skills/                # Custom agent skills (21 skills)
+├── skills/                # Custom agent skills (23 skills)
 │   ├── caveman/
+│   ├── continuous-monitor/    # Docker continuous monitoring
 │   ├── design-an-interface/
+│   ├── docker-monitor/        # Docker container debugging
 │   ├── domain-model/
 │   ├── edit-article/
 │   ├── find-skills/
@@ -29,11 +31,14 @@ opencode-config/
 │   ├── ubiquitous-language/
 │   ├── write-a-skill/
 │   └── zoom-out/
-└── scripts/               # Automation scripts
-    ├── sync-obsidian.sh       # Linux sync
-    ├── sync-obsidian.ps1      # Windows sync
-    ├── setup-cron.sh          # Linux scheduler
-    └── setup-task-scheduler.ps1 # Windows scheduler
+├── scripts/               # Automation scripts
+│   ├── sync-obsidian.sh       # Linux sync
+│   ├── sync-obsidian.ps1      # Windows sync
+│   ├── setup-cron.sh          # Linux scheduler
+│   ├── setup-task-scheduler.ps1 # Windows scheduler
+│   ├── monitor.sh             # Docker monitor (Linux)
+│   └── monitor.ps1            # Docker monitor (Windows)
+└── README.md
 ```
 
 ## MCP Servers Configured
@@ -44,14 +49,16 @@ opencode-config/
 
 ## Skills Overview
 
-The project includes 21 custom skills for the opencode agent:
+The project includes 23 custom skills for the opencode agent:
 
 | Skill | Description |
 |-------|-------------|
-| `tdd` | Test-driven development (supports Python/pytest, JS/Vitest, React Testing Library) |
-| `setup-pre-commit` | Set up Husky pre-commit hooks (supports npm/yarn/pnpm/uv/poetry) |
-| `improve-codebase-architecture` | Find architectural improvements, deep modules |
-| `scaffold-exercises` | Create exercise directory structures |
+| `tdd` | Test-driven development (Python/pytest, JS/Vitest, React Testing Library) |
+| `setup-pre-commit` | Pre-commit hooks (npm/yarn/pnpm, uv/poetry) |
+| `improve-codebase-architecture` | Deep module refactoring |
+| `docker-monitor` | Docker container debugging, log analysis |
+| `continuous-monitor` | Background monitor with auto-restart |
+| `scaffold-exercises` | Exercise directory scaffolding |
 | `domain-model` | DDD context mapping, ADR creation |
 | `grill-me` | Interview user to stress-test plans |
 | `design-it-twice` | Generate multiple interface designs |
@@ -63,8 +70,6 @@ The project includes 21 custom skills for the opencode agent:
 | `qa` | Interactive QA/bug reporting |
 | `obsidian-vault` | Search/manage Obsidian notes |
 | `write-a-skill` | Create new agent skills |
-| `scaffold-exercises` | Exercise directory scaffolding |
-| `setup-pre-commit` | Pre-commit hook setup |
 | `git-guardrails-claude-code` | Block dangerous git commands |
 | `edit-article` | Edit and improve articles |
 | `caveman` | Ultra-compressed communication mode |
@@ -86,8 +91,6 @@ cp ~/opencode-config/opencode.json ~/.config/opencode/opencode.json
 
 ### 3. Install Skills
 
-Copy the skills directory to your agent's skills folder:
-
 ```bash
 cp -r ~/opencode-config/skills ~/.agents/skills
 ```
@@ -105,19 +108,47 @@ chmod +x sync-obsidian.sh setup-cron.sh
 #### Windows (Task Scheduler)
 
 ```powershell
-# Run PowerShell as Administrator
 cd .\scripts
 .\setup-task-scheduler.ps1
 ```
 
-### 5. Manual Sync (Optional)
+### 5. Docker Continuous Monitor
+
+The monitor script takes a Makefile path and target, auto-starts containers if not running, and restarts on failure.
+
+#### Linux
 
 ```bash
-# Linux
-./scripts/sync-obsidian.sh
+cd ~/opencode-config/scripts
 
-# Windows
-powershell -ExecutionPolicy Bypass -File .\scripts\sync-obsidian.ps1
+# Monitor a project
+./monitor.sh /path/to/project/Makefile up
+./monitor.sh ./Makefile dev
+
+# Run in background
+./monitor.sh /path/to/Makefile up &
+```
+
+#### Windows
+
+```powershell
+# With parameters
+.\monitor.ps1 -Makefile "C:\path\to\Makefile" -Target up
+
+# Interactive (prompts for Makefile path)
+.\monitor.ps1
+```
+
+View logs:
+```bash
+tail -f ~/.docker-monitor.log      # All logs
+tail -f ~/.docker-monitor-errors.log  # Errors only
+```
+
+Stop monitor:
+```bash
+pkill -f monitor.sh    # Linux
+# or Ctrl+C in terminal
 ```
 
 ## Language Support
@@ -145,8 +176,6 @@ powershell -ExecutionPolicy Bypass -File .\scripts\sync-obsidian.ps1
 
 ## Environment Variables
 
-Copy `.env.example` to `.env` and fill in your values:
-
 ```bash
 cp .env.example .env
 ```
@@ -160,22 +189,16 @@ GITHUB_TOKEN=your-github-token
 
 ## Updating
 
-To pull latest changes and sync:
-
 ```bash
 cd ~/opencode-config
 git pull origin main
-
-# Update skills
 cp -r skills ~/.agents/
-
-# Update config
 cp opencode.json ~/.config/opencode/
 ```
 
 ## Notes
 
-- The `opencode.json` in this repo has secrets replaced with placeholders
-- For local development, create your own `~/.config/opencode/opencode.json` with real tokens
-- The Obsidian sync runs daily at 6:00 AM by default
-- Scripts log to `~/.obsidian-sync.log` (Linux) or Event Viewer (Windows)
+- `opencode.json` has secrets replaced with placeholders
+- Create your own `~/.config/opencode/opencode.json` with real tokens
+- Obsidian sync runs daily at 6:00 AM
+- Docker monitor logs: `~/.docker-monitor.log`, `~/.docker-monitor-errors.log`
