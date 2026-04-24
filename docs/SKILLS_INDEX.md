@@ -4,25 +4,25 @@ A comprehensive guide to using agent skills for planning, development, and tooli
 
 ## Quick Reference
 
-| Need | Use Skill |
-|------|-----------|
-| Convert idea to PRD | `to-prd` |
-| Break plan into issues | `to-issues` |
-| Stress-test a plan | `grill-me` |
-| Design multiple interfaces | `design-it-twice` |
-| Plan a refactor | `request-refactor-plan` |
-| Build with TDD | `tdd` |
-| Debug a bug | `triage-issue` |
-| Improve architecture | `improve-codebase-architecture` |
-| Set up pre-commit hooks | `setup-pre-commit` |
-| Block dangerous git | `git-guardrails-claude-code` |
-| Create new skills | `write-a-skill` |
-| Edit/improve articles | `edit-article` |
-| Extract domain terms | `ubiquitous-language` |
-| Manage Obsidian notes | `obsidian-vault` |
-| Scaffold exercises | `scaffold-exercises` |
-| Monitor Docker containers | `docker-monitor` |
-| Continuous Docker monitor | `continuous-monitor` |
+| Need | Use Skill | When to Use |
+|------|-----------|-------------|
+| Convert idea to PRD | `to-prd` | After discussing a feature idea |
+| Break plan into issues | `to-issues` | After creating a PRD or spec |
+| Stress-test a plan | `grill-me` | Before starting major work |
+| Design multiple interfaces | `design-it-twice` | When designing new APIs/modules |
+| Plan a refactor | `request-refactor-plan` | Before significant refactoring |
+| Build with TDD | `tdd` | Building features or fixing bugs |
+| Debug a bug | `triage-issue` | When investigating a bug |
+| Improve architecture | `improve-codebase-architecture` | When codebase feels complex |
+| Set up pre-commit hooks | `setup-pre-commit` | Setting up new project |
+| Block dangerous git | `git-guardrails-claude-code` | To prevent destructive git ops |
+| Create new skills | `write-a-skill` | When creating custom skills |
+| Edit/improve articles | `edit-article` | When improving documentation |
+| Extract domain terms | `ubiquitous-language` | In domain-driven projects |
+| Manage Obsidian notes | `obsidian-vault` | Searching/creating vault notes |
+| Scaffold exercises | `scaffold-exercises` | Creating course material |
+| Monitor Docker containers | `docker-monitor` | Debugging container issues |
+| Continuous Docker monitor | `continuous-monitor` | Background error monitoring |
 
 ---
 
