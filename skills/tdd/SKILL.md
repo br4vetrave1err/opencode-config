@@ -1,6 +1,6 @@
 ---
 name: tdd
-description: Test-driven development with red-green-refactor loop. Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development.
+description: Test-driven development with red-green-refactor loop. Supports JavaScript/TypeScript (Jest/Vitest) and Python (pytest). Use when user wants to build features or fix bugs using TDD, mentions "red-green-refactor", wants integration tests, or asks for test-first development.
 ---
 
 # Test-Driven Development
@@ -104,4 +104,70 @@ After all tests pass, look for [refactor candidates](refactoring.md):
 [ ] Test would survive internal refactor
 [ ] Code is minimal for this test
 [ ] No speculative features added
+```
+
+## Framework-Specific Notes
+
+### JavaScript/TypeScript (Jest/Vitest)
+
+```bash
+npm install -D vitest
+# or: pnpm add -D vitest
+```
+
+```typescript
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+
+describe('checkout', () => {
+  beforeEach(() => {
+    vi.clearAllMocks();
+  });
+  
+  it('processes valid cart', () => {
+    // test code
+  });
+});
+```
+
+### Python (pytest)
+
+```bash
+uv add --dev pytest pytest-asyncio
+```
+
+```python
+import pytest
+from decimal import Decimal
+
+@pytest.fixture
+def cart():
+    return Cart()
+
+def test_checkout_processes_valid_cart(cart):
+    # test code
+    pass
+```
+
+### React + TypeScript (Vitest + React Testing Library)
+
+```bash
+npm install -D @testing-library/react @testing-library/user-event vitest
+```
+
+```typescript
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import { describe, it, expect, vi } from 'vitest';
+
+describe('LoginForm', () => {
+  it('submits form on button click', async () => {
+    const user = userEvent.setup();
+    render(<LoginForm onSubmit={vi.fn()} />);
+    
+    await user.type(screen.getByLabelText(/email/), 'test@example.com');
+    await user.click(screen.getByRole('button', { name: /submit/i }));
+    
+    expect(onSubmit).toHaveBeenCalled();
+  });
+});
 ```

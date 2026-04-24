@@ -31,6 +31,64 @@ The core principle: **replace, don't layer.**
 - Tests assert on observable outcomes through the public interface, not internal state
 - Tests should survive internal refactors — they describe behavior, not implementation
 
+## Language-Specific Patterns
+
+### Python: Pydantic for Deep Modules
+
+Use Pydantic for clean interfaces with validation:
+
+```python
+from pydantic import BaseModel, Field
+from decimal import Decimal
+from typing import Protocol, runtime_checkable
+
+# Deep module with small interface
+class PaymentGateway(Protocol):
+    def charge(self, amount: Decimal, currency: str) -> PaymentResult: ...
+    def refund(self, transaction_id: str) -> RefundResult: ...
+
+class OrderProcessor:
+    def __init__(self, gateway: PaymentGateway):
+        self._gateway = gateway  # Injected, testable
+    
+    def process(self, order: Order) -> Receipt:
+        # Deep implementation hidden behind simple interface
+        result = self._gateway.charge(order.total, order.currency)
+        return Receipt(order_id=order.id, transaction=result.transaction_id)
+
+# Easy to test with protocol
+class MockGateway:
+    def charge(self, amount: Decimal, currency: str) -> PaymentResult:
+        return PaymentResult(success=True, transaction_id="mock-123")
+    
+    def refund(self, transaction_id: str) -> RefundResult:
+        return RefundResult(success=True)
+
+# Test
+def test_order_processor():
+    processor = OrderProcessor(MockGateway())
+    receipt = processor.process(Order(id="1", total=Decimal("100")))
+    assert receipt.transaction == "mock-123"
+```
+
+### TypeScript/React: Deep Components
+
+```typescript
+// Deep module: simple props interface, complex internal logic
+interface ButtonProps {
+  children: React.ReactNode;
+  onClick: () => void;
+  variant?: 'primary' | 'secondary';
+}
+
+// Implementation hides complexity:
+- Loading states
+- Debouncing
+- Accessibility handling
+- Animation
+- Error boundaries
+```
+
 ## Issue Template
 
 <issue-template>

@@ -1,42 +1,41 @@
 ---
 name: setup-pre-commit
-description: Set up Husky pre-commit hooks with lint-staged (Prettier), type checking, and tests in the current repo. Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.
+description: Set up pre-commit hooks with lint-staged, type checking, and tests. Supports JavaScript/TypeScript (npm/pnpm/yarn) and Python (uv/poetry). Use when user wants to add pre-commit hooks, set up Husky, configure lint-staged, or add commit-time formatting/typechecking/testing.
 ---
 
 # Setup Pre-Commit Hooks
 
 ## What This Sets Up
 
-- **Husky** pre-commit hook
-- **lint-staged** running Prettier on all staged files
-- **Prettier** config (if missing)
+- **Husky** pre-commit hook (or raw `.git/hooks/pre-commit` on non-GitHub CI)
+- **lint-staged** running formatters on staged files
 - **typecheck** and **test** scripts in the pre-commit hook
 
 ## Steps
 
-### 1. Detect package manager
+### 1. Detect project type
 
-Check for `package-lock.json` (npm), `pnpm-lock.yaml` (pnpm), `yarn.lock` (yarn), `bun.lockb` (bun). Use whichever is present. Default to npm if unclear.
+**JavaScript/TypeScript**: Check for `package.json`, `package-lock.json`, `pnpm-lock.yaml`, `yarn.lock`, `bun.lockb`
 
-### 2. Install dependencies
+**Python**: Check for `pyproject.toml`, `uv.lock`, `poetry.lock`, `requirements.txt`
 
-Install as devDependencies:
+### 2. JavaScript/TypeScript Setup
 
+#### Install dependencies
+
+```bash
+npm install -D husky lint-staged prettier
+# or: pnpm add -D husky lint-staged prettier
+# or: yarn add -D husky lint-staged prettier
 ```
-husky lint-staged prettier
-```
 
-### 3. Initialize Husky
+#### Initialize Husky
 
 ```bash
 npx husky init
 ```
 
-This creates `.husky/` dir and adds `prepare: "husky"` to package.json.
-
-### 4. Create `.husky/pre-commit`
-
-Write this file (no shebang needed for Husky v9+):
+#### Create `.husky/pre-commit`
 
 ```
 npx lint-staged
@@ -44,9 +43,9 @@ npm run typecheck
 npm run test
 ```
 
-**Adapt**: Replace `npm` with detected package manager. If repo has no `typecheck` or `test` script in package.json, omit those lines and tell the user.
+**Adapt**: Replace `npm` with detected package manager. If no `typecheck` or `test` script in package.json, omit those lines.
 
-### 5. Create `.lintstagedrc`
+#### Create `.lintstagedrc`
 
 ```json
 {
@@ -54,38 +53,68 @@ npm run test
 }
 ```
 
-### 6. Create `.prettierrc` (if missing)
+### 3. Python Setup (uv)
 
-Only create if no Prettier config exists. Use these defaults:
+#### Install dependencies
 
-```json
-{
-  "useTabs": false,
-  "tabWidth": 2,
-  "printWidth": 80,
-  "singleQuote": false,
-  "trailingComma": "es5",
-  "semi": true,
-  "arrowParens": "always"
-}
+```bash
+uv add --dev husky lint-staged ruff
 ```
 
-### 7. Verify
+#### Create `.husky/pre-commit`
+
+```
+uv run ruff check .
+uv run ruff format .
+uv run mypy .
+uv run pytest
+```
+
+#### Create `.ruff.toml` (if missing)
+
+```toml
+target-version = "py311"
+line-length = 100
+
+[lint]
+select = ["E", "F", "I", "N", "W", "UP"]
+ignore = ["E501"]
+
+[lint.isort]
+known-first-party = ["app"]
+```
+
+#### Create `mypy.ini` or configure in pyproject.toml
+
+```toml
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+disallow_untyped_defs = false
+```
+
+### 4. Python Setup (Poetry)
+
+```bash
+poetry add --dev husky ruff mypy pytest
+```
+
+### 5. Verify
 
 - [ ] `.husky/pre-commit` exists and is executable
-- [ ] `.lintstagedrc` exists
-- [ ] `prepare` script in package.json is `"husky"`
-- [ ] `prettier` config exists
-- [ ] Run `npx lint-staged` to verify it works
+- [ ] `lint-staged` config exists (`.lintstagedrc` or in package.json)
+- [ ] Prettier/Ruff config exists
+- [ ] Run lint-staged to verify: `npx lint-staged` or `uvx lint-staged`
 
-### 8. Commit
+### 6. Commit
 
-Stage all changed/created files and commit with message: `Add pre-commit hooks (husky + lint-staged + prettier)`
-
-This will run through the new pre-commit hooks — a good smoke test that everything works.
+Stage all changed/created files and commit with message: `Add pre-commit hooks`
 
 ## Notes
 
-- Husky v9+ doesn't need shebangs in hook files
+- Python projects can use [pre-commit](https://pre-commit.com/) instead of Husky for broader CI support
+- For TypeScript, add `npm run typecheck` if using tsc (or `tsc --noEmit`)
+- For React + Vite + Vitest: `npm run test:run` or `vitest run`
 - `prettier --ignore-unknown` skips files Prettier can't parse (images, etc.)
-- The pre-commit runs lint-staged first (fast, staged-only), then full typecheck and tests
