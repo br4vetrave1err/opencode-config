@@ -50,7 +50,9 @@ FIXTURE() {
   echo "$dir"
 }
 
-VALIDATE_SCRIPT="/home/br4vetrave1er/Desktop/projects/opencode-config/scripts/validate-config.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+VALIDATE_SCRIPT="$PROJECT_DIR/scripts/validate-config.sh"
 
 echo "=== Config Validation Tests ==="
 echo ""

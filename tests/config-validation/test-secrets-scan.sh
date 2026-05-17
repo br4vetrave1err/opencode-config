@@ -42,7 +42,9 @@ assert_output_contains() {
 FIXTURE_DIR=$(mktemp -d)
 trap "rm -rf $FIXTURE_DIR" EXIT
 
-SCAN_SCRIPT="/home/br4vetrave1er/Desktop/projects/opencode-config/scripts/secrets-scan.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+SCAN_SCRIPT="$PROJECT_DIR/scripts/secrets-scan.sh"
 
 echo "=== Secrets Scanner Tests ==="
 echo ""

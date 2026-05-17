@@ -49,7 +49,9 @@ FIXTURE() {
   echo "$dir"
 }
 
-DRIFT_SCRIPT="/home/br4vetrave1er/Desktop/projects/opencode-config/scripts/detect-drift.sh"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
+DRIFT_SCRIPT="$PROJECT_DIR/scripts/detect-drift.sh"
 
 echo "=== Drift Detection Tests ==="
 echo ""

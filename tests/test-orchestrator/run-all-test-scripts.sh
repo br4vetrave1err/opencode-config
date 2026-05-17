@@ -49,7 +49,7 @@ FIXTURE() {
   echo "$dir"
 }
 
-SCRIPT_DIR="/home/br4vetrave1er/.config/opencode/scripts"
+SCRIPT_DIR="$(cd "$(dirname "$0")/../.." && pwd)/scripts"
 
 echo "=== Test Orchestrator Tests ==="
 echo ""
