@@ -60,14 +60,28 @@ else
   GLOB_COUNT=$(jq -r '.instructions[]' "$CONFIG_FILE" 2>/dev/null)
   if [ -n "$GLOB_COUNT" ]; then
     while IFS= read -r glob; do
-      # Remove leading ~ and expand
-      expanded_glob="${glob/#\~/$HOME}"
-      # Handle glob patterns
-      matching_files=$(eval echo "$SCAN_DIR/$expanded_glob" 2>/dev/null | head -1)
-      if [ -n "$matching_files" ] && [ "$matching_files" != "$SCAN_DIR/$expanded_glob" ]; then
-        check "glob resolves: $glob" 0
+      # Handle ~/.config/opencode/ paths - resolve relative to SCAN_DIR
+      if [[ "$glob" == "~/.config/opencode/"* ]]; then
+        expanded_glob="${glob#"~/.config/opencode/"}"
       else
-        check "glob resolves: $glob" 1
+        # Remove leading ~ and expand
+        expanded_glob="${glob/#\~/$HOME}"
+      fi
+      # Handle glob patterns - check if path contains glob chars
+      if [[ "$expanded_glob" == *"*"* || "$expanded_glob" == *"?"* || "$expanded_glob" == *"["* ]]; then
+        matching_files=$(eval echo "$SCAN_DIR/$expanded_glob" 2>/dev/null | head -1)
+        if [ -n "$matching_files" ] && [ "$matching_files" != "$SCAN_DIR/$expanded_glob" ]; then
+          check "glob resolves: $glob" 0
+        else
+          check "glob resolves: $glob" 1
+        fi
+      else
+        # Direct file path - check if file exists
+        if [ -f "$SCAN_DIR/$expanded_glob" ]; then
+          check "file exists: $glob" 0
+        else
+          check "file exists: $glob" 1
+        fi
       fi
     done <<< "$GLOB_COUNT"
   fi
@@ -98,8 +112,8 @@ if [ -d "$SKILLS_DIR" ]; then
     if grep -q '^---' "$skill_file" 2>/dev/null; then
       check "skill '$skill_name' has frontmatter" 0
 
-      # Extract name from frontmatter
-      fm_name=$(sed -n '/^---$/,/^---$/p' "$skill_file" | grep '^name:' | sed 's/^name: *//')
+      # Extract name from frontmatter (first block only)
+      fm_name=$(awk '/^---$/{if(++n==2)exit; if(n==1)next} n==1 && /^name:/{print; exit}' "$skill_file" | sed 's/^name: *//')
       if [ -n "$fm_name" ]; then
         if [ "$fm_name" = "$skill_name" ]; then
           check "skill '$skill_name' name matches directory" 0
