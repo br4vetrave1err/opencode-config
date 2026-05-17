@@ -1,7 +1,7 @@
 # Opencode Agent Skills Guide
 
 **Updated:** 2026-05-17
-**Total Skills:** 36 (22 existing + 14 new)
+**Total Skills: 122
 **Total Agents:** 8 (5 built-in + 3 custom)
 **Total Commands:** 8 (Postman workflow)
 **Total MCP Servers:** 5 (3 local + 2 remote)

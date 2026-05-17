@@ -6,6 +6,9 @@ All changes to the AI agent configuration, tracked by date.
 
 ## 2026-05-17: Consolidation — Phase 1 (Planning)
 
+### Additional Changes
+- Created comprehensive Agentic Architecture Guide (08-Development/) — complete reference for using the system effectively
+
 ### What Changed
 - Analyzed all 13 Cursor built-in skills, mapped to OpenCode equivalents.
 - Investigated Atlassian MCP authentication method (OAuth 2.1 PKCE).
@@ -34,6 +37,9 @@ All changes to the AI agent configuration, tracked by date.
 
 ## 2026-05-17: Consolidation — Phase 3 (Redis Skill + Playwright Tests)
 
+### Additional Changes
+- Created comprehensive Agentic Architecture Guide (08-Development/) — complete reference for using the system effectively
+
 ### What Changed
 - Copied `redis-development` skill from Cursor plugin cache to `~/.config/opencode/skills/redis-development/`
 - Updated instructions glob in `opencode.json` and `AGENTS.md` to point to new location
@@ -49,6 +55,9 @@ All changes to the AI agent configuration, tracked by date.
 ---
 
 ## 2026-05-17: Consolidation — Phase 2 (Execution Complete)
+
+### Additional Changes
+- Created comprehensive Agentic Architecture Guide (08-Development/) — complete reference for using the system effectively
 
 ### What Changed
 - Moved 22 existing skills to `~/.config/opencode/skills/`
