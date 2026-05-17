@@ -36,9 +36,10 @@ All changes to the AI agent configuration, tracked by date.
 
 ### Final State
 - **Skills:** 37 total
-- **Tests:** 36 playwright + 12 smoke (pending) + conformance (pending)
+- **Tests:** 56 total (18 secrets + 13 config + 14 drift + 11 changelog) — all passing
+- **Scripts:** 5 (secrets-scan, validate-config, detect-drift, generate-changelog, sync-to-repo)
 - **Eval Scenarios:** 17 (local only)
-- **CI/CD:** 3 workflows
+- **CI/CD:** 3 workflows (deployed)
 - **Cron Jobs:** 2 (drift detection + changelog at 10 PM daily)
 
 ---

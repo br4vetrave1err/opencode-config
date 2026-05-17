@@ -1,7 +1,7 @@
 # OpenCode Agent Config — Overview
 
 **Last Updated:** 2026-05-17
-**Status:** Testing framework in development
+**Status:** Scripts + tests complete, CI/CD deployed
 
 ---
 
@@ -13,8 +13,9 @@
 | Agents | 8 (5 built-in + 3 custom) | ✅ Complete |
 | Skills | 37 (22 existing + 15 new) | ✅ Complete |
 | Commands | 8 (Postman workflow) | ✅ Complete |
-| Tests | 36 playwright + 12 smoke (pending) | ⬜ Framework in progress |
-| CI/CD | 3 workflows (pending) | ⬜ Pending |
+| Tests | 56 (18 secrets + 13 config + 14 drift + 11 changelog) | ✅ Complete |
+| CI/CD | 3 workflows (validate, sync-log, evals) | ✅ Deployed |
+| Scripts | 5 (secrets-scan, validate-config, detect-drift, generate-changelog, sync-to-repo) | ✅ Complete |
 
 ---
 
