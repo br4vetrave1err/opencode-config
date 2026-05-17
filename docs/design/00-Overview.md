@@ -1,7 +1,7 @@
 # OpenCode Agent Config — Overview
 
 **Last Updated:** 2026-05-17
-**Status:** Scripts + tests complete, CI/CD deployed
+**Status:** Unified /test command deployed, 97 tests passing
 
 ---
 
@@ -12,10 +12,10 @@
 | MCP Servers | 5 (3 local + 2 remote) | ✅ Configured |
 | Agents | 8 (5 built-in + 3 custom) | ✅ Complete |
 | Skills | 37 (22 existing + 15 new) | ✅ Complete |
-| Commands | 8 (Postman workflow) | ✅ Complete |
-| Tests | 56 (18 secrets + 13 config + 14 drift + 11 changelog) | ✅ Complete |
+| Commands | 9 (8 Postman + 1 unified /test) | ✅ Complete |
+| Tests | 97 (18 secrets + 13 config + 14 drift + 11 changelog + 41 orchestrator) | ✅ Complete |
 | CI/CD | 3 workflows (validate, sync-log, evals) | ✅ Deployed |
-| Scripts | 5 (secrets-scan, validate-config, detect-drift, generate-changelog, sync-to-repo) | ✅ Complete |
+| Scripts | 14 (5 config + 8 test + 1 orchestrator) | ✅ Complete |
 
 ---
 
