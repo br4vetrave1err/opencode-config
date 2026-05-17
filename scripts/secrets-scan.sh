@@ -52,6 +52,7 @@ done < <(find "$SCAN_DIR" -type f \
   -not -path "*/__pycache__/*" \
   -not -path "*/.venv/*" \
   -not -path "*/venv/*" \
+  -not -path "*/tests/config-validation/test-secrets-scan.sh" \
   -not -name "*.lock" \
   -not -name "*.log" \
   -not -name ".env.example" \
