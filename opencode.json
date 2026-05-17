@@ -87,6 +87,7 @@
     "*": "allow"
   },
   "instructions": [
-    "~/.config/opencode/skills/redis-development/rules/*.md"
+    "~/.config/opencode/skills/redis-development/rules/*.md",
+    "~/.config/opencode/skills/test-orchestrator/SKILL.md"
   ]
 }

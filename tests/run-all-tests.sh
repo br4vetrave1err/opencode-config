@@ -3,7 +3,7 @@
 # Run: bash tests/run-all-tests.sh
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-TEST_DIR="$SCRIPT_DIR/config-validation"
+TEST_DIR="$SCRIPT_DIR"
 
 PASS=0
 FAIL=0
@@ -21,10 +21,11 @@ echo "========================================="
 echo ""
 
 TESTS=(
-  "test-secrets-scan.sh:Secrets Scanner"
-  "test-validate-config.sh:Config Validation"
-  "test-detect-drift.sh:Drift Detection"
-  "test-generate-changelog.sh:Changelog Generator"
+  "config-validation/test-secrets-scan.sh:Secrets Scanner"
+  "config-validation/test-validate-config.sh:Config Validation"
+  "config-validation/test-detect-drift.sh:Drift Detection"
+  "config-validation/test-generate-changelog.sh:Changelog Generator"
+  "test-orchestrator/run-all-test-scripts.sh:Test Orchestrator"
 )
 
 for test_entry in "${TESTS[@]}"; do
