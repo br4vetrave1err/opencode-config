@@ -50,8 +50,6 @@ EXCLUDES=(
   ".DS_Store"
   "*.lock"
   "*.log"
-  "docs/"
-  ".github/"
 )
 
 EXCLUDE_ARGS=()
