@@ -3,11 +3,15 @@
   "mcp": {
     "confluence": {
       "type": "local",
-      "command": ["npx", "-y", "@aashari/mcp-server-atlassian-confluence"],
-      "env": {
-        "ATLASSIAN_SITE_NAME": "https://dobbe.atlassian.net/wiki/",
-        "ATLASSIAN_USER_EMAIL": "yadavakshay36912@gmail.com",
-        "ATLASSIAN_API_TOKEN": "REPLACE_WITH_YOUR_TOKEN"
+      "command": [
+        "npx",
+        "-y",
+        "atlassian-confluence-mcp-server@latest"
+      ],
+      "environment": {
+        "CONFLUENCE_BASE_URL": "<REDACTED>",
+        "CONFLUENCE_USERNAME": "<REDACTED>",
+        "PAT": "<REDACTED>"
       },
       "enabled": true
     },
@@ -22,21 +26,61 @@
     },
     "github": {
       "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
-      "env": {
-        "GITHUB_TOKEN": "REPLACE_WITH_YOUR_TOKEN"
+      "command": [
+        "npx",
+        "-y",
+        "modelcontextprotocol/server-github"
+      ],
+      "environment": {
+        "GITHUB_TOKEN": "<REDACTED>"
       },
       "enabled": true
     },
-    "google-drive": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-google-drive"],
-      "env": {
-        "GOOGLE_API_KEY": "REPLACE_WITH_YOUR_API_KEY",
-        "GOOGLE_CLIENT_ID": "REPLACE_WITH_YOUR_CLIENT_ID",
-        "GOOGLE_CLIENT_SECRET": "REPLACE_WITH_YOUR_CLIENT_SECRET"
-      },
-      "enabled": false
+    "postman": {
+      "type": "remote",
+      "url": "https://mcp.postman.com/mcp",
+      "enabled": true
+    },
+    "atlassian": {
+      "type": "remote",
+      "url": "https://mcp.atlassian.com/v1/mcp",
+      "enabled": true
     }
+  },
+  "agent": {
+    "readiness-analyzer": {
+      "description": "Analyze any API for AI agent compatibility. Scans OpenAPI specs across 8 pillars (48 checks), scores agent-readiness, and provides fix recommendations.",
+      "mode": "subagent",
+      "permission": {
+        "edit": "allow",
+        "bash": "allow",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    },
+    "pr-babysitter": {
+      "description": "Keep a PR merge-ready by triaging comments, resolving conflicts, and fixing CI in a loop.",
+      "mode": "subagent",
+      "permission": {
+        "bash": "allow",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    },
+    "split-to-prs": {
+      "description": "Split a large change into multiple PRs with proper commit boundaries.",
+      "mode": "subagent",
+      "permission": {
+        "bash": "allow",
+        "read": "allow",
+        "glob": "allow",
+        "grep": "allow"
+      }
+    }
+  },
+  "permission": {
+    "*": "allow"
   }
 }

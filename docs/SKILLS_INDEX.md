@@ -1,197 +1,235 @@
 # Opencode Agent Skills Guide
 
-A comprehensive guide to using agent skills for planning, development, and tooling. Based on mattpocock/skills with custom additions for this project.
+Comprehensive guide to all 41 agent skills. Updated 2026-05-17.
 
 ## Quick Reference
 
-| Need | Use Skill | When to Use |
-|------|-----------|-------------|
-| Convert idea to PRD | `to-prd` | After discussing a feature idea |
-| Break plan into issues | `to-issues` | After creating a PRD or spec |
-| Stress-test a plan | `grill-me` | Before starting major work |
-| Design multiple interfaces | `design-it-twice` | When designing new APIs/modules |
-| Plan a refactor | `request-refactor-plan` | Before significant refactoring |
-| Build with TDD | `tdd` | Building features or fixing bugs |
-| Debug a bug | `triage-issue` | When investigating a bug |
-| Improve architecture | `improve-codebase-architecture` | When codebase feels complex |
-| Set up pre-commit hooks | `setup-pre-commit` | Setting up new project |
-| Block dangerous git | `git-guardrails-claude-code` | To prevent destructive git ops |
-| Create new skills | `write-a-skill` | When creating custom skills |
-| Edit/improve articles | `edit-article` | When improving documentation |
-| Extract domain terms | `ubiquitous-language` | In domain-driven projects |
-| Manage Obsidian notes | `obsidian-vault` | Searching/creating vault notes |
-| Scaffold exercises | `scaffold-exercises` | Creating course material |
-| Monitor Docker containers | `docker-monitor` | Debugging container issues |
-| Continuous Docker monitor | `continuous-monitor` | Background error monitoring |
+| Need | Use Skill | Category |
+|------|-----------|----------|
+| Convert idea to PRD | `to-prd` | Planning |
+| Break plan into issues | `to-issues` | Planning |
+| Stress-test a plan | `grill-me` | Planning |
+| Design multiple interfaces | `design-an-interface` | Planning |
+| Plan a refactor | `request-refactor-plan` | Planning |
+| Build with TDD | `tdd` | Development |
+| Debug a bug (codebase) | `triage-issue` | Development |
+| Debug a bug (Jira) | `jira-triage-issue` | Project Mgmt |
+| Improve architecture | `improve-codebase-architecture` | Development |
+| Sync API ↔ Postman | `/postman-sync` (command) | API |
+| Run API tests | `/postman-test` (command) | API |
+| Extract action items from meetings | `capture-tasks-from-meeting-notes` | Project Mgmt |
+| Generate status report → Confluence | `generate-status-report` | Project Mgmt |
+| Convert Confluence spec → Jira | `spec-to-backlog` | Project Mgmt |
+| Search company knowledge | `search-company-knowledge` | Project Mgmt |
+| Set up pre-commit hooks | `setup-pre-commit` | Tooling |
+| Block dangerous git | `git-guardrails-claude-code` | Tooling |
+| Create new skills | `write-a-skill` / `create-skill` | Tooling |
+| Edit/improve articles | `edit-article` | Writing |
+| Manage Obsidian notes | `obsidian-vault` | Knowledge |
 
 ---
 
-## Planning & Design
+## Planning & Design (8)
 
 ### to-prd
-Turn the current conversation context into a Product Requirements Document and submit it as a GitHub issue.
-
-**When to use:** After discussing a feature idea when you have a clear user need but no formal spec.
-
-**Customization:** Uses GitHub MCP to create issues automatically.
-
----
+Turn conversation context into a PRD, submit as GitHub issue.
 
 ### to-issues
-Break any plan, spec, or PRD into independently-grabbable GitHub issues using vertical slices (tracer bullets).
-
-**When to use:** After you have a PRD when a feature needs to be broken into implementable chunks.
-
-**Customization:** Creates issues with proper labels and milestones via GitHub MCP.
-
----
+Break a plan/PRD into vertical-slice GitHub issues.
 
 ### grill-me
-Get relentlessly interviewed about a plan or design until every branch of the decision tree is resolved.
+Relentlessly interview user about a plan/design until all decisions resolved.
 
-**When to use:** Before starting major work, when there are unresolved assumptions, or to stress-test a design.
-
----
-
-### design-it-twice
-Generate multiple radically different interface designs for a module using parallel sub-agents.
-
-**When to use:** When designing a new API or module, or when you're unsure which approach is best.
-
-**Approaches:** Minimal interface, Maximum flexibility, Optimize for common case, Ports & adapters.
-
----
+### design-an-interface
+Generate multiple interface designs via parallel sub-agents.
 
 ### request-refactor-plan
-Create a detailed refactor plan with small, safe commits via user interview, then file it as a GitHub issue.
+Create detailed refactor plan with tiny commits, file as GitHub issue.
 
----
+### domain-model
+Grilling session against domain model, updates CONTEXT.md/ADRs.
 
 ### ubiquitous-language
-Extract a DDD-style ubiquitous language glossary from the current conversation, flagging ambiguities. Saves to `UBIQUITOUS_LANGUAGE.md`.
+Extract DDD-style ubiquitous language glossary.
+
+### zoom-out
+Tell agent to zoom out for broader context.
 
 ---
 
-## Development
+## Development (7)
 
 ### tdd
-Test-driven development with red-green-refactor loop. Builds features one vertical slice at a time.
-
-**Workflow:**
-```
-RED:   Write test → fails
-GREEN: Minimal code → passes
-REFACTOR: Clean up → tests still pass
-```
-
-**Custom Framework Support:**
-
-| Language | Framework |
-|----------|-----------|
-| Python | pytest |
-| TypeScript/JS | Vitest, Jest |
-| React + TS | React Testing Library + user-event |
-
-**Python additions:** pytest, Pydantic with `@runtime_checkable` Protocols, Ruff/mypy.
-
----
+Test-driven development with red-green-refactor loop. Supports Python (pytest), TypeScript/JS (Vitest/Jest), React (RTL + user-event).
 
 ### triage-issue
-Investigate a bug by exploring the codebase, identify root cause, and create a GitHub issue with a TDD-based fix plan.
-
----
+Investigate codebase bugs, find root cause, create GitHub issue with TDD fix plan.
 
 ### improve-codebase-architecture
-Explore a codebase for architectural improvement opportunities, focusing on deepening shallow modules.
+Find architectural improvement opportunities, deepen shallow modules.
 
-**Customization:** Added Python/Pydantic patterns for deep modules.
-
----
+### qa
+Interactive QA session, user reports bugs, agent files GitHub issues.
 
 ### scaffold-exercises
-Create exercise directory structures with sections, problems, solutions, and explainers.
+Create exercise directory structures with sections, problems, solutions.
 
-**Customization:** Supports both TypeScript (`main.ts`) and Python (`main.py`).
+### playwright-cli
+Automate browser interactions, test web pages, work with Playwright tests.
+
+### caveman
+Ultra-compressed communication mode, cuts ~75% tokens.
 
 ---
 
-## Tooling & Setup
+## API & Postman (6)
+
+### agent-ready-apis
+Knowledge about AI agent API compatibility (8 pillars, 48 checks). Use with `readiness-analyzer` agent.
+
+### postman-knowledge
+Postman concepts and MCP tool guidance. Reference for all Postman MCP tools.
+
+### postman-routing
+Auto-route API/Postman requests to the correct command or skill.
+
+### /postman-sync (command)
+Sync Postman collections with local API code. Detects OpenAPI specs, creates/updates collections.
+
+### /postman-codegen (command)
+Generate typed client code from Postman collections. Matches project conventions.
+
+### /postman-search (command)
+Discover APIs across Postman workspaces using natural language.
+
+### /postman-test (command)
+Run collection tests, diagnose failures, suggest fixes.
+
+### /postman-mock (command)
+Create Postman mock servers from collections or API specs.
+
+### /postman-docs (command)
+Analyze and improve API documentation completeness.
+
+### /postman-security (command)
+Security audit against OWASP API Top 10.
+
+### /postman-setup (command)
+First-run Postman MCP configuration guide.
+
+---
+
+## Project Management (5)
+
+### capture-tasks-from-meeting-notes
+Extract action items from meeting notes → create Jira tasks.
+
+### generate-status-report
+Generate project status reports from Jira → publish to Confluence.
+
+### spec-to-backlog
+Convert Confluence specs → structured Jira backlogs with Epics.
+
+### search-company-knowledge
+Search across Confluence + Jira for internal company knowledge.
+
+### jira-triage-issue
+Triage bug reports, check Jira duplicates, create or link issues.
+
+---
+
+## Tooling & Setup (6)
 
 ### setup-pre-commit
-Set up Husky pre-commit hooks with lint-staged, type checking, and tests.
-
-**Customization - Supported tools:**
-
-| Type | Tools |
-|------|-------|
-| JS Package Managers | npm, pnpm, yarn |
-| Python Package Managers | uv, Poetry |
-| Linting | Prettier, Ruff |
-| Type Checking | tsc, mypy |
-| Testing | Vitest, Jest, pytest |
-
----
+Set up Husky pre-commit hooks with lint-staged, Prettier, type checking, tests. Supports npm/pnpm/yarn, uv/Poetry, Ruff, mypy.
 
 ### git-guardrails-claude-code
-Set up Claude Code hooks to block dangerous git commands before execution (push, reset --hard, clean, branch -D).
+Block dangerous git commands (push, reset --hard, clean, branch -D) via pre-tool hooks.
+
+### write-a-skill / create-skill
+Create new agent skills with proper structure, progressive disclosure, bundled resources.
+
+### create-rule
+Create rule files for persistent AI guidance across sessions.
+
+### create-subagent
+Create custom subagent .md files with system prompts and permissions.
+
+### update-opencode-config
+Edit opencode.json and tui.json configuration files safely.
+
+### update-opencode-settings
+Update OpenCode TUI settings (theme, keybinds, scroll, display).
+
+### opencode-sdk
+Guide for building with OpenCode SDK (`@opencode-ai/sdk`).
 
 ---
 
-## Writing & Knowledge
-
-### write-a-skill
-Create new agent skills with proper structure, progressive disclosure, and bundled resources.
-
----
+## Writing & Knowledge (4)
 
 ### edit-article
-Edit and improve articles by restructuring sections, improving clarity, and tightening prose.
-
----
+Edit and improve articles by restructuring, improving clarity, tightening prose.
 
 ### obsidian-vault
-Search, create, and manage notes in an Obsidian vault with wikilinks.
+Search, create, and manage Obsidian vault notes with wikilinks.
 
-**Vault location:** `/home/br4vetrave1er/Documents/br4vetrave1er notes`
+### find-skills
+Discover and install agent skills from the ecosystem.
+
+### github-triage
+Triage GitHub issues via label-based state machine with interactive grilling.
 
 ---
 
-## Docker Monitoring (Custom)
+## Custom (5)
 
-### docker-monitor
-Monitor Docker containers, analyze logs, and debug issues.
+### autonomous-agent
+Autonomous agent operations with logging, sandboxing, and drive operations.
 
 ### continuous-monitor
-Run persistent background monitor that watches containers and auto-restarts on failure.
+Persistent background Docker monitor that auto-restarts containers on failure.
 
-**Usage:**
-```bash
-# Linux
-./scripts/monitor.sh /path/to/Makefile up
-./scripts/monitor.sh /path/to/Makefile dev &
+### docker-monitor
+Docker container debugging, log analysis, and health checks.
 
-# Windows
-.\scripts\monitor.ps1 -Makefile "C:\path\to\Makefile" -Target up
-```
+### output-validator
+Output validation with domain-specific checks (coding, math, physics, writing).
+
+### problem-planner
+Problem planning and decomposition into actionable steps.
 
 ---
 
 ## Recommended Workflows
 
 ### Feature Implementation
-1. `grill-me` - Clarify requirements
-2. `design-it-twice` - Explore interface options
-3. `to-prd` - Create formal spec
-4. `to-issues` - Break into issues
-5. `tdd` - Implement one issue at a time
+1. `grill-me` → Clarify requirements
+2. `design-an-interface` → Explore options
+3. `to-prd` → Create formal spec
+4. `to-issues` → Break into issues
+5. `tdd` → Implement one issue at a time
+
+### API Development (Postman)
+1. `/postman-setup` → Connect Postman
+2. Write API code locally
+3. `/postman-sync` → Push to Postman
+4. `/postman-docs` → Generate docs
+5. `/postman-mock` → Create mock server
+6. `/postman-test` → Run tests
+7. `/postman-security` → Security audit
+8. `/postman-codegen` → Generate client SDK
 
 ### Bug Fix
-1. `triage-issue` - Investigate root cause
-2. `tdd` - Write failing test first
+1. `triage-issue` (codebase) or `jira-triage-issue` (Jira)
+2. `tdd` → Write failing test first
 3. Implement fix
 4. Verify test passes
 
-### Refactor
-1. `improve-codebase-architecture` - Find opportunities
-2. `request-refactor-plan` - Plan the refactor
-3. `tdd` - Implement in small steps
+### Meeting → Action Items
+1. `capture-tasks-from-meeting-notes` → Extract → create Jira tasks
+2. `generate-status-report` → Weekly status → publish to Confluence
+
+### Spec → Implementation
+1. `spec-to-backlog` → Confluence spec → Jira backlog with Epics
+2. `search-company-knowledge` → Find related internal docs

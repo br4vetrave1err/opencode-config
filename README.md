@@ -1,36 +1,46 @@
 # Opencode Agent Configuration
 
-This repository stores the configuration for the opencode AI agent running on this system. It includes MCP server configs, custom skills, and automated Obsidian vault sync.
+Consolidated AI agent configuration for OpenCode. All skills, agents, commands, and MCP servers managed under `~/.config/opencode/`.
 
 ## Structure
 
 ```
 opencode-config/
-├── opencode.json          # MCP (Model Context Protocol) configuration
-├── skills/                # Custom agent skills (23 skills)
-│   ├── caveman/
-│   ├── continuous-monitor/    # Docker continuous monitoring
-│   ├── design-an-interface/
-│   ├── docker-monitor/        # Docker container debugging
-│   ├── domain-model/
-│   ├── edit-article/
-│   ├── find-skills/
-│   ├── git-guardrails-claude-code/
-│   ├── github-triage/
-│   ├── grill-me/
-│   ├── improve-codebase-architecture/
-│   ├── obsidian-vault/
-│   ├── qa/
-│   ├── request-refactor-plan/
-│   ├── scaffold-exercises/
-│   ├── setup-pre-commit/
-│   ├── tdd/
-│   ├── to-issues/
-│   ├── to-prd/
-│   ├── triage-issue/
-│   ├── ubiquitous-language/
-│   ├── write-a-skill/
-│   └── zoom-out/
+├── opencode.json          # MCP (5 servers), agents (3), permissions
+├── skills/                # 41 skills total
+│   ├── agent-ready-apis/      # Postman: API agent-readiness
+│   ├── postman-knowledge/     # Postman: MCP tool guidance
+│   ├── postman-routing/       # Postman: Auto-routing
+│   ├── capture-tasks-from-meeting-notes/  # Atlassian: Meeting → Jira
+│   ├── generate-status-report/            # Atlassian: Jira → Confluence
+│   ├── spec-to-backlog/                   # Atlassian: Confluence → Jira
+│   ├── search-company-knowledge/          # Atlassian: Cross-system search
+│   ├── jira-triage-issue/                 # Atlassian: Bug triage
+│   ├── create-rule/                       # Cursor-adapted: Rule creation
+│   ├── create-skill/                      # Cursor-adapted: Skill creation
+│   ├── create-subagent/                   # Cursor-adapted: Agent creation
+│   ├── opencode-sdk/                      # Cursor-adapted: SDK guide
+│   ├── update-opencode-config/            # Cursor-adapted: Config editing
+│   ├── update-opencode-settings/          # Cursor-adapted: TUI settings
+│   ├── autonomous-agent/                  # Custom: Autonomous operations
+│   ├── continuous-monitor/                # Custom: Docker monitoring
+│   ├── docker-monitor/                    # Custom: Container debugging
+│   ├── output-validator/                  # Custom: Output validation
+│   ├── problem-planner/                   # Custom: Problem decomposition
+│   └── [22 original skills...]
+├── agents/                # 3 custom subagents
+│   ├── readiness-analyzer.md  # API agent-readiness scanner
+│   ├── pr-babysitter.md       # PR merge-readiness loop
+│   └── split-to-prs.md        # Split changes into PRs
+├── commands/              # 8 Postman workflow commands
+│   ├── postman-sync.md
+│   ├── postman-codegen.md
+│   ├── postman-search.md
+│   ├── postman-test.md
+│   ├── postman-mock.md
+│   ├── postman-docs.md
+│   ├── postman-security.md
+│   └── postman-setup.md
 ├── scripts/               # Automation scripts
 │   ├── sync-obsidian.sh       # Linux sync
 │   ├── sync-obsidian.ps1      # Windows sync
@@ -38,42 +48,58 @@ opencode-config/
 │   ├── setup-task-scheduler.ps1 # Windows scheduler
 │   ├── monitor.sh             # Docker monitor (Linux)
 │   └── monitor.ps1            # Docker monitor (Windows)
+├── docs/
+│   ├── SKILLS_INDEX.md        # Skills guide
+│   └── updates/               # Dated changelog
 └── README.md
 ```
 
-## MCP Servers Configured
+## MCP Servers
 
-- **Confluence** - Atlassian Confluence integration
-- **Obsidian** - Local vault sync
-- **GitHub** - GitHub API integration
+| Server | Type | Auth | Status |
+|--------|------|------|--------|
+| confluence | local | PAT | ✅ Active |
+| obsidian | local | None | ✅ Active |
+| github | local | Token | ✅ Active |
+| postman | remote | OAuth 2.1 | ⬜ Pending auth |
+| atlassian | remote | OAuth 2.1 (PKCE) | ⬜ Pending auth |
 
 ## Skills Overview
 
-The project includes 23 custom skills for the opencode agent:
+41 skills across 5 categories:
 
-| Skill | Description |
-|-------|-------------|
-| `tdd` | Test-driven development (Python/pytest, JS/Vitest, React Testing Library) |
-| `setup-pre-commit` | Pre-commit hooks (npm/yarn/pnpm, uv/poetry) |
-| `improve-codebase-architecture` | Deep module refactoring |
-| `docker-monitor` | Docker container debugging, log analysis |
-| `continuous-monitor` | Background monitor with auto-restart |
-| `scaffold-exercises` | Exercise directory scaffolding |
-| `domain-model` | DDD context mapping, ADR creation |
-| `grill-me` | Interview user to stress-test plans |
-| `design-it-twice` | Generate multiple interface designs |
-| `ubiquitous-language` | Extract DDD glossary |
-| `github-triage` | Triage GitHub issues |
-| `to-prd` | Convert context to PRD |
-| `to-issues` | Break plan into GitHub issues |
-| `triage-issue` | Investigate and plan bug fixes |
-| `qa` | Interactive QA/bug reporting |
-| `obsidian-vault` | Search/manage Obsidian notes |
-| `write-a-skill` | Create new agent skills |
-| `git-guardrails-claude-code` | Block dangerous git commands |
-| `edit-article` | Edit and improve articles |
-| `caveman` | Ultra-compressed communication mode |
-| `zoom-out` | Get broader context |
+| Category | Count | Examples |
+|----------|-------|----------|
+| Planning & Design | 8 | to-prd, to-issues, grill-me, design-an-interface |
+| Development | 7 | tdd, triage-issue, improve-codebase-architecture |
+| API & Postman | 6 | postman-sync, postman-codegen, agent-ready-apis |
+| Project Management | 5 | capture-tasks-from-meeting-notes, generate-status-report |
+| Tooling & Knowledge | 15 | obsidian-vault, write-a-skill, caveman |
+
+See [docs/SKILLS_INDEX.md](docs/SKILLS_INDEX.md) for full catalog.
+
+## Agents
+
+| Agent | Mode | Description |
+|-------|------|-------------|
+| readiness-analyzer | subagent | Scan OpenAPI specs for agent-readiness (8 pillars, 48 checks) |
+| pr-babysitter | subagent | Keep PRs merge-ready (conflicts, comments, CI loop) |
+| split-to-prs | subagent | Split large changes into multiple PRs |
+
+## Commands
+
+All Postman workflow commands (trigger with `/` prefix in TUI):
+
+| Command | Description |
+|---------|-------------|
+| `/postman-sync` | Sync Postman collections with local API code |
+| `/postman-codegen` | Generate typed client code from collections |
+| `/postman-search` | Discover APIs across workspaces |
+| `/postman-test` | Run collection tests, diagnose failures |
+| `/postman-mock` | Create mock servers |
+| `/postman-docs` | Analyze and improve API documentation |
+| `/postman-security` | Security audit (OWASP API Top 10) |
+| `/postman-setup` | First-run Postman MCP configuration |
 
 ## Setup
 
@@ -83,96 +109,44 @@ The project includes 23 custom skills for the opencode agent:
 git clone https://github.com/br4vetrave1err/opencode-config.git ~/opencode-config
 ```
 
-### 2. Copy Configuration to Opencode
+### 2. Copy Configuration to OpenCode
 
 ```bash
 cp ~/opencode-config/opencode.json ~/.config/opencode/opencode.json
+# Edit with real tokens (this repo has placeholders)
 ```
 
 ### 3. Install Skills
 
 ```bash
-cp -r ~/opencode-config/skills ~/.agents/skills
+cp -r ~/opencode-config/skills/* ~/.config/opencode/skills/
 ```
 
-### 4. Set Up Obsidian Vault Sync
-
-#### Linux (cron)
+### 4. Install Agents
 
 ```bash
-cd ~/opencode-config/scripts
-chmod +x sync-obsidian.sh setup-cron.sh
-./setup-cron.sh
+cp -r ~/opencode-config/agents/* ~/.config/opencode/agents/
 ```
 
-#### Windows (Task Scheduler)
-
-```powershell
-cd .\scripts
-.\setup-task-scheduler.ps1
-```
-
-### 5. Docker Continuous Monitor
-
-The monitor script takes a Makefile path and target, auto-starts containers if not running, and restarts on failure.
-
-#### Linux
+### 5. Install Commands
 
 ```bash
-cd ~/opencode-config/scripts
-
-# Monitor a project
-./monitor.sh /path/to/project/Makefile up
-./monitor.sh ./Makefile dev
-
-# Run in background
-./monitor.sh /path/to/Makefile up &
+cp -r ~/opencode-config/commands/* ~/.config/opencode/commands/
 ```
 
-#### Windows
+### 6. Authenticate Remote MCP Servers
 
-```powershell
-# With parameters
-.\monitor.ps1 -Makefile "C:\path\to\Makefile" -Target up
-
-# Interactive (prompts for Makefile path)
-.\monitor.ps1
-```
-
-View logs:
 ```bash
-tail -f ~/.docker-monitor.log      # All logs
-tail -f ~/.docker-monitor-errors.log  # Errors only
+opencode mcp auth postman
+opencode mcp auth atlassian
 ```
 
-Stop monitor:
+### 7. Verify
+
 ```bash
-pkill -f monitor.sh    # Linux
-# or Ctrl+C in terminal
+opencode mcp list
+# Should show 5 servers (3 local + 2 remote)
 ```
-
-## Language Support
-
-### Python
-
-- **Package managers**: uv, Poetry
-- **Linting**: Ruff, mypy
-- **Testing**: pytest
-- **Typing**: Pydantic (with `@runtime_checkable` Protocols)
-
-### JavaScript/TypeScript
-
-- **Package managers**: npm, pnpm, yarn
-- **Linting/Formatting**: Prettier, ESLint
-- **Testing**: Vitest, Jest
-- **Type checking**: TypeScript (tsc)
-
-### React + TypeScript
-
-- **Framework**: React + Vite
-- **Testing**: Vitest + React Testing Library + user-event
-- **API Mocking**: MSW (Mock Service Worker)
-- **E2E**: Playwright (optional)
 
 ## Environment Variables
 
@@ -181,9 +155,9 @@ cp .env.example .env
 ```
 
 ```env
-ATLASSIAN_SITE_NAME=https://your-site.atlassian.net/wiki/
-ATLASSIAN_USER_EMAIL=your-email@example.com
-ATLASSIAN_API_TOKEN=your-api-token
+CONFLUENCE_BASE_URL=https://your-site.atlassian.net/wiki
+CONFLUENCE_USERNAME=your-email@example.com
+PAT=your-personal-access-token
 GITHUB_TOKEN=your-github-token
 ```
 
@@ -192,13 +166,19 @@ GITHUB_TOKEN=your-github-token
 ```bash
 cd ~/opencode-config
 git pull origin main
-cp -r skills ~/.agents/
+cp -r skills/* ~/.config/opencode/skills/
+cp -r agents/* ~/.config/opencode/agents/
+cp -r commands/* ~/.config/opencode/commands/
 cp opencode.json ~/.config/opencode/
 ```
 
+## Changelog
+
+See [docs/updates/](docs/updates/) for dated change logs.
+
 ## Notes
 
-- `opencode.json` has secrets replaced with placeholders
+- `opencode.json` in this repo has secrets replaced with `<REDACTED>`
 - Create your own `~/.config/opencode/opencode.json` with real tokens
-- Obsidian sync runs daily at 6:00 AM
-- Docker monitor logs: `~/.docker-monitor.log`, `~/.docker-monitor-errors.log`
+- All skills load from `~/.config/opencode/skills/` (new canonical location)
+- Old locations (`~/.agents/skills/`, `~/.claude/skills/`) have been removed
