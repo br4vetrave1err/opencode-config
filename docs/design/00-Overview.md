@@ -1,7 +1,7 @@
 # OpenCode Agent Config — Overview
 
 **Last Updated:** 2026-05-17
-**Status:** Migration in progress
+**Status:** Testing framework in development
 
 ---
 
@@ -10,9 +10,11 @@
 | Component | Count | Status |
 |-----------|-------|--------|
 | MCP Servers | 5 (3 local + 2 remote) | ✅ Configured |
-| Agents | 8 (5 built-in + 3 custom) | ⬜ Custom agents pending creation |
-| Skills | 36 (22 existing + 14 new) | ⬜ Consolidation pending |
-| Commands | 8 (Postman workflow) | ⬜ Pending creation |
+| Agents | 8 (5 built-in + 3 custom) | ✅ Complete |
+| Skills | 37 (22 existing + 15 new) | ✅ Complete |
+| Commands | 8 (Postman workflow) | ✅ Complete |
+| Tests | 36 playwright + 12 smoke (pending) | ⬜ Framework in progress |
+| CI/CD | 3 workflows (pending) | ⬜ Pending |
 
 ---
 
@@ -36,19 +38,29 @@
 
 ### Catalogs
 - [[03-Skills/Skills-Index|Skills Index]] (quick reference)
-- [[03-Skills/Skill-Catalog|Skill Catalog]] (all 36 skills)
+- [[03-Skills/Skill-Catalog|Skill Catalog]] (all 37 skills)
 - [[03-Skills/Agent-Catalog|Agent Catalog]] (all 8 agents)
 - [[03-Skills/Command-Catalog|Command Catalog]] (all 8 commands)
 - [[03-Skills/MCP-Catalog|MCP Catalog]] (all 5 MCP servers)
 
 ### Updates
 - [[04-Updates/Changelog|Changelog]]
-- [[04-Updates/2026-05-17-Initial-Migration|2026-05-17 Initial Migration]]
+
+### Testing
+- [[06-Testing/Test-Strategy|Test Strategy]]
+- [[06-Testing/MCP-Conformance|MCP Conformance]]
+- [[06-Testing/Config-Validation|Config Validation]]
+- [[06-Testing/Eval-Framework|Eval Framework]]
+
+### Observability
+- [[07-Observability/Change-Log|Change Log]]
+- [[07-Observability/Drift-Detection|Drift Detection]]
+- [[07-Observability/Audit-Trail|Audit Trail]]
 
 ### Reference
-- [[05-Reference/Opencode-Agent-Config-Project|Project Details]]
-- [[05-Reference/Workflows|Recommended Workflows]]
-- [[05-Reference/Troubleshooting|Troubleshooting]]
+- [[05-Reference/Quick-Start|Quick Start]]
+- [[05-Reference/Authentication-Setup|Authentication Setup]]
+- [[05-Reference/Reference-Index|Reference Index]]
 
 ---
 
@@ -59,7 +71,21 @@ All configuration lives under `~/.config/opencode/`:
 ```
 ~/.config/opencode/
 ├── opencode.json          ← MCP, agents, instructions, permissions
+├── tui.json               ← TUI settings (theme, keybinds)
+├── AGENTS.md              ← Global rules + Redis rules glob
 ├── agents/                ← 3 custom subagents
 ├── commands/              ← 8 Postman commands
-└── skills/                ← 36 skills
+├── skills/                ← 37 skills
+├── plugins/               ← OpenCode plugin hooks
+└── tests/                 ← Test suites (new)
 ```
+
+## Git Repo
+
+Mirror at `~/Desktop/projects/opencode-config/`:
+- Sanitized `opencode.json` (secrets → env vars)
+- All skills, agents, commands
+- Documentation backup (`docs/design/`)
+- CI/CD workflows (`.github/workflows/`)
+- Test suites (`tests/`)
+- Automation scripts (`scripts/`)
