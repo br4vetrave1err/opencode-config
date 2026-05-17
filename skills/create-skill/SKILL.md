@@ -3,67 +3,45 @@ name: create-skill
 description: Create SKILL.md files with proper frontmatter and structure
 ---
 
-# Create Skill
+# Creating Skills
 
-Create new skill files with proper frontmatter and structure for OpenCode agents.
+## Process
 
-## Skill File Format
+1. **Create directory** named after the skill (kebab-case)
+2. **Create SKILL.md** with frontmatter:
+   ```yaml
+   ---
+   name: my-skill-name
+   description: Short description shown in skill picker
+   ---
+   ```
+3. **Write content** with progressive disclosure
+4. **Add resources** (scripts, templates) if needed
+5. **Test** the skill triggers correctly
 
-Skills are defined in `SKILL.md` files with YAML frontmatter:
+## Frontmatter Template
 
-```markdown
+```yaml
 ---
-name: my-skill-name
-description: Short description shown in skill picker
+name: skill-name
+description: Brief description of capability. Use when [specific triggers].
 ---
-
-# Skill Title
-
-When to use this skill. Clear trigger conditions.
-
-## Workflow
-
-Step-by-step instructions for the agent.
-
-## Examples
-
-Concrete examples of using this skill.
-
-## Resources
-
-References to scripts, templates, or other files.
 ```
 
-## Where to Create Skills
+## Rules
 
-- **Project-level:** `.opencode/skills/<skill-name>/SKILL.md`
-- **Global:** `~/.config/opencode/skills/<skill-name>/SKILL.md`
+- `name` must match directory name exactly
+- `description` must be actionable and include trigger conditions
+- Keep frontmatter minimal (name + description only)
+- Use kebab-case for skill names
 
-## Naming Convention
+## Example
 
-- Directory: kebab-case (`my-skill-name`)
-- File: always `SKILL.md`
-- Name in frontmatter: matches directory name
-
-## Skill Design Principles
-
-1. **Single purpose**: One skill does one thing well
-2. **Clear triggers**: When should the agent use this?
-3. **Actionable steps**: Numbered workflows the agent can follow
-4. **Progressive disclosure**: Start simple, add detail as needed
-5. **Self-contained**: Include all context the agent needs
-
-## Workflow
-
-1. Define the skill's purpose and triggers
-2. Check if an existing skill covers this
-3. Create directory: `~/.config/opencode/skills/<name>/`
-4. Create `SKILL.md` with frontmatter and content
-5. Test by triggering the skill in a session
-
-## Related Files
-
-Skills can include additional files in their directory:
-- Scripts: `scripts/`
-- Templates: `templates/`
-- References: `references/`
+```
+skills/my-new-skill/
+├── SKILL.md
+├── scripts/
+│   └── helper.sh
+└── templates/
+    └── template.md
+```

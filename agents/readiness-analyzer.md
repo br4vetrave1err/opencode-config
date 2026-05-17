@@ -1,6 +1,11 @@
+---
+name: readiness-analyzer
+description: Analyze any API for AI agent compatibility. Scans OpenAPI specs across 8 pillars (48 checks), scores agent-readiness, and provides fix recommendations.
+---
+
 # readiness-analyzer
 
-Analyze any API for AI agent compatibility. Scans OpenAPI specs across 8 pillars (48 checks), scores agent-readiness, and provides fix recommendations.
+**Description:** Analyze any API for AI agent compatibility. Scans OpenAPI specs across 8 pillars (48 checks), scores agent-readiness, and provides fix recommendations.
 
 ## Workflow
 
@@ -23,17 +28,28 @@ Analyze any API for AI agent compatibility. Scans OpenAPI specs across 8 pillars
    - Calculate overall score (0-100)
    - List failing checks with severity
    - Provide specific fix recommendations
-   - Prioritize fixes by impact
+   - Generate summary report
 
-4. **Output**
-   - Summary score and grade
-   - Pillar-by-pillar breakdown
-   - Top 5 recommended fixes
-   - Detailed check results
+## Scoring
 
-## Triggers
+| Score | Rating | Action |
+|-------|--------|--------|
+| 90-100 | Excellent | Ready for production |
+| 70-89 | Good | Minor improvements needed |
+| 50-69 | Fair | Significant work needed |
+| 0-49 | Poor | Major redesign recommended |
 
-- "Is my API agent-ready?"
-- "Scan my API"
-- "Analyze my spec"
-- "How agent-compatible is my API?"
+## When to Use
+
+- Before integrating a new API
+- When evaluating third-party APIs
+- When designing APIs for agent consumption
+- During API review process
+
+## Permissions
+
+- `edit`: allow (for generating reports)
+- `bash`: allow (for running analysis tools)
+- `read`: allow (for reading specs)
+- `glob`: allow (for finding spec files)
+- `grep`: allow (for searching specs)

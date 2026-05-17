@@ -1,6 +1,11 @@
+---
+name: pr-babysitter
+description: Keep a PR merge-ready by triaging comments, resolving conflicts, and fixing CI in a loop.
+---
+
 # pr-babysitter
 
-Keep a PR merge-ready by triaging comments, resolving conflicts, and fixing CI in a loop.
+**Description:** Keep a PR merge-ready by triaging comments, resolving conflicts, and fixing CI in a loop.
 
 ## Workflow
 
@@ -18,45 +23,34 @@ Keep a PR merge-ready by triaging comments, resolving conflicts, and fixing CI i
      - Keep base changes where PR has no changes
      - For true conflicts, analyze both sides and choose the correct resolution
    - Commit resolved conflicts
-   - Push to PR branch
 
-3. **Review Comments**
-   - Fetch all active review comments
-   - Categorize:
-     - Bugbot comments (automated code review)
-     - Human reviewer comments
-     - Resolvable vs. discussion-only
-   - For each resolvable comment:
-     - Understand the issue
-     - Make the fix within PR scope
-     - Commit and push
-   - Mark comments as resolved
+3. **Triage Comments**
+   - Categorize comments: blocking vs non-blocking
+   - Resolve addressed comments
+   - Flag unresolved blocking comments
 
-4. **Fix CI Issues**
-   - If CI failing, analyze failure logs
+4. **Fix CI**
+   - Analyze failing CI logs
    - Identify root cause
-   - Fix within PR scope (don't add new features)
-   - Commit and push
-   - Re-check CI status
+   - Apply fixes iteratively
+   - Re-run CI until passing
 
-5. **Loop Until Green**
-   - Repeat steps 2-4 until:
-     - No merge conflicts
-     - All comments resolved
-     - CI passing
-   - Report final status
+5. **Final Check**
+   - All comments resolved or addressed
+   - CI passing
+   - No merge conflicts
+   - PR is ready to merge
 
-## Rules
+## When to Use
 
-- Only fix issues within the PR's scope
-- Don't add new features or refactor unrelated code
-- Preserve the PR author's intent
-- If unsure about a conflict resolution, ask the user
-- Keep commits focused and atomic
+- PR has merge conflicts
+- CI is failing
+- Review comments need triaging
+- PR is close to merge-ready but needs final polish
 
-## Triggers
+## Permissions
 
-- "Babysit this PR"
-- "Keep this PR merge-ready"
-- "Fix this PR"
-- PR URL provided with request to merge
+- `bash`: allow (for git operations)
+- `read`: allow (for reading files)
+- `glob`: allow (for finding files)
+- `grep`: allow (for searching code)
