@@ -97,7 +97,17 @@ All Postman workflow commands (trigger with `/` prefix):
 - Removed `~/.agents/skills/` (moved to `~/.config/opencode/skills/`)
 - Removed `~/.claude/skills/` (moved to `~/.config/opencode/skills/`)
 
-### Pending
+### Completed
 
-- [ ] `opencode mcp auth postman` — OAuth flow
-- [ ] `opencode mcp auth atlassian` — OAuth flow
+- [x] `opencode mcp auth postman` — OAuth flow ✅ Authenticated
+- [x] `opencode mcp auth atlassian` — OAuth flow ✅ Authenticated
+
+### Verification
+
+```
+opencode mcp list
+● ✓ postman  connected  (https://mcp.postman.com/mcp)
+● ✓ atlassian  connected  (https://mcp.atlassian.com/v1/mcp)
+```
+
+Local servers (confluence, obsidian, github) show as "failed" outside interactive TUI sessions — this is expected. They connect when OpenCode TUI starts.
