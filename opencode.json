@@ -8,6 +8,11 @@
         "-y",
         "atlassian-confluence-mcp-server@latest"
       ],
+      "environment": {
+        "CONFLUENCE_BASE_URL": "https://dobbe.atlassian.net",
+        "CONFLUENCE_USERNAME": "yadavakshay36912@gmail.com",
+        "PAT": "${CONFLUENCE_PAT}"
+      },
       "enabled": true
     },
     "obsidian": {
@@ -26,6 +31,9 @@
         "-y",
         "modelcontextprotocol/server-github"
       ],
+      "environment": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
       "enabled": true
     },
     "postman": {
@@ -49,7 +57,8 @@
         "read": "allow",
         "glob": "allow",
         "grep": "allow"
-      }
+      },
+      "options": {}
     },
     "pr-babysitter": {
       "description": "Keep a PR merge-ready by triaging comments, resolving conflicts, and fixing CI in a loop.",
@@ -59,7 +68,8 @@
         "read": "allow",
         "glob": "allow",
         "grep": "allow"
-      }
+      },
+      "options": {}
     },
     "split-to-prs": {
       "description": "Split a large change into multiple PRs with proper commit boundaries.",
@@ -69,13 +79,14 @@
         "read": "allow",
         "glob": "allow",
         "grep": "allow"
-      }
+      },
+      "options": {}
     }
   },
   "permission": {
     "*": "allow"
   },
   "instructions": [
-    "~/.cursor/plugins/cache/cursor-public/redis-development/*/rules/*.md"
+    "~/.config/opencode/skills/redis-development/rules/*.md"
   ]
 }

@@ -4,10 +4,10 @@ These rules apply to all OpenCode sessions.
 
 ## Redis Development
 
-Load Redis development rules from Cursor plugin cache:
+Load Redis development rules from consolidated skills directory:
 
 ```
-~/.cursor/plugins/cache/cursor-public/redis-development/*/rules/*.md
+~/.config/opencode/skills/redis-development/rules/*.md
 ```
 
 These rules cover:
