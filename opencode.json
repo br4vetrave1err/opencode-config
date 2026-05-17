@@ -11,7 +11,7 @@
       "environment": {
         "CONFLUENCE_BASE_URL": "https://dobbe.atlassian.net",
         "CONFLUENCE_USERNAME": "yadavakshay36912@gmail.com",
-        "PAT": "${CONFLUENCE_PAT}"
+        "PAT": "***REDACTED***"
       },
       "enabled": true
     },
@@ -29,10 +29,10 @@
       "command": [
         "npx",
         "-y",
-        "modelcontextprotocol/server-github"
+        "@modelcontextprotocol/server-github"
       ],
       "environment": {
-        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+        "GITHUB_TOKEN": "***REDACTED***"
       },
       "enabled": true
     },
