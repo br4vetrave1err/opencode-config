@@ -44,7 +44,7 @@ trap "rm -rf $FIXTURE_DIR" EXIT
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_DIR="$(cd "$SCRIPT_DIR/../.." && pwd)"
 CHANGELOG_SCRIPT="$PROJECT_DIR/scripts/generate-changelog.sh"
-REPO_DIR="/home/br4vetrave1er/Desktop/projects/opencode-config"
+REPO_DIR="$PROJECT_DIR"
 
 echo "=== Changelog Generator Tests ==="
 echo ""
