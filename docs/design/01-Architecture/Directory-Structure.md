@@ -70,9 +70,10 @@
 │       ├── update-opencode-config/  ← Edit opencode.json
 │       └── update-opencode-settings/ ← Edit tui.json
 │
-├── package.json                     ← npm package (for local MCP servers)
+├── plugins/                         ← OpenCode plugins (.js/.ts hooks, custom tools)
+├── package.json                     ← npm dependencies (for local MCP servers)
 ├── package-lock.json                ← npm lockfile
-└── node_modules/                    ← npm dependencies
+└── node_modules/                    ← npm packages
 ```
 
 ---

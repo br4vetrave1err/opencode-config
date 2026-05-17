@@ -1,0 +1,13 @@
+{
+  "theme": "dark",
+  "keybindings": {
+    "submit": "Enter",
+    "new_line": "Shift+Enter",
+    "autocomplete": "Tab"
+  },
+  "display": {
+    "scrollback": 10000,
+    "max_output_lines": 500,
+    "show_token_count": true
+  }
+}

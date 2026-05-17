@@ -8,11 +8,6 @@
         "-y",
         "atlassian-confluence-mcp-server@latest"
       ],
-      "environment": {
-        "CONFLUENCE_BASE_URL": "<REDACTED>",
-        "CONFLUENCE_USERNAME": "<REDACTED>",
-        "PAT": "<REDACTED>"
-      },
       "enabled": true
     },
     "obsidian": {
@@ -31,9 +26,6 @@
         "-y",
         "modelcontextprotocol/server-github"
       ],
-      "environment": {
-        "GITHUB_TOKEN": "<REDACTED>"
-      },
       "enabled": true
     },
     "postman": {
