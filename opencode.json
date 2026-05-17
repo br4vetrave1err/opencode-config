@@ -82,5 +82,8 @@
   },
   "permission": {
     "*": "allow"
-  }
+  },
+  "instructions": [
+    "~/.cursor/plugins/cache/cursor-public/redis-development/*/rules/*.md"
+  ]
 }

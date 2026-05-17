@@ -55,8 +55,8 @@ Config sources are **merged** (not replaced). Later sources override earlier one
 | Layer | File | Status |
 |-------|------|--------|
 | Global | `~/.config/opencode/opencode.json` | ✅ Active — MCP, agents, instructions, permissions |
-| Global TUI | `~/.config/opencode/tui.json` | ⬜ Optional — theme, keybinds, scroll |
-| Global Rules | `~/.config/opencode/AGENTS.md` | ⬜ Optional — global instructions |
+| Global TUI | `~/.config/opencode/tui.json` | ✅ Active — theme, keybinds, scroll |
+| Global Rules | `~/.config/opencode/AGENTS.md` | ✅ Active — global instructions + Redis rules |
 | Project | `<project>/opencode.json` | ⬜ Per-project overrides |
 | Project Rules | `<project>/AGENTS.md` | ✅ Active in some projects |
 

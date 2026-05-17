@@ -30,26 +30,6 @@ All changes to the AI agent configuration, tracked by date.
 ### Files Created
 - `agent config/` Obsidian folder: 23 documentation files.
 
-### Files to Update (Next Phase)
-- ✅ `~/.config/opencode/opencode.json` — MCP, agents, instructions, permissions.
-- ✅ `~/.config/opencode/agents/` — 3 custom agent files.
-- ✅ `~/.config/opencode/commands/` — 8 command files.
-- ✅ `~/.config/opencode/skills/` — 14 new skill files.
-
-### Files to Move
-- ✅ 22 existing skills from `~/.agents/skills/` and `~/.claude/skills/` → `~/.config/opencode/skills/`.
-
-### Files to Delete (After Verification)
-- ✅ `~/.agents/skills/` (moved)
-- ✅ `~/.claude/skills/` (moved)
-
-### OAuth Authentication
-- ✅ `opencode mcp auth postman` — Authenticated
-- ✅ `opencode mcp auth atlassian` — Authenticated
-
-### Obsidian Docs Backup
-- ✅ Copied to git repo: `docs/design/` (22 files)
-
 ---
 
 ## 2026-05-17: Consolidation — Phase 2 (Execution Complete)
@@ -59,16 +39,22 @@ All changes to the AI agent configuration, tracked by date.
 - Created 14 new skills (3 Postman, 5 Atlassian, 6 Cursor-adapted)
 - Created 3 custom subagents in `~/.config/opencode/agents/`
 - Created 8 Postman commands in `~/.config/opencode/commands/`
-- Updated `opencode.json` with remote MCP servers, agents, permissions
+- Updated `opencode.json` with remote MCP servers, agents, permissions, instructions
+- Created `AGENTS.md` with global rules + Redis rules glob
+- Created `tui.json` with default TUI settings
 - Authenticated both remote MCP servers via OAuth
+- Removed old directories: `~/.agents/skills/`, `~/.claude/skills/`
+- Removed old custom skills: autonomous-agent, problem-planner, output-validator, continuous-monitor, docker-monitor
 - Copied Obsidian docs to git repo as backup (`docs/design/`)
 
 ### Final State
-- **Skills:** 41 total (22 original + 14 new + 5 existing custom)
+- **Skills:** 36 total (21 original + 14 new + 1 playwright-cli)
 - **Agents:** 3 custom subagents
 - **Commands:** 8 Postman workflow commands
 - **MCP Servers:** 5 (3 local + 2 remote, both authenticated)
-- **Documentation:** 22 files in git repo `docs/design/`
+- **Config Files:** opencode.json, tui.json, AGENTS.md
+- **Instructions:** Redis rules glob (30+ rules from Cursor plugin cache)
+- **Documentation:** 22 files in Obsidian + git repo backup
 
 ### Verification
 ```
@@ -76,6 +62,14 @@ opencode mcp list
 ● ✓ postman  connected  (https://mcp.postman.com/mcp)
 ● ✓ atlassian  connected  (https://mcp.atlassian.com/v1/mcp)
 ```
+
+### 4-Way Sync Status
+| Component | Status |
+|-----------|--------|
+| `~/.config/opencode/` | ✅ Source of truth |
+| Git repo | ✅ Synced (sanitized) |
+| Obsidian vault | ✅ Synced |
+| Git repo docs/design/ | ✅ Backup of Obsidian |
 
 ---
 
