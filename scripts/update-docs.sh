@@ -105,15 +105,16 @@ echo "--- Updating Overview.md ---"
 TODAY=$(get_today)
 
 if [ -f "$OVERVIEW" ]; then
-  sed -i "s|\*\*Last Updated:\*\*.*|**Last Updated:** $TODAY|" "$OVERVIEW"
-  sed -i "s|\*\*Status:\*\*.*|**Status:** $STATUS|" "$OVERVIEW"
-  sed -i "s| Skills |.*| Skills | $SKILLS_COUNT ($SKILL_DIRS_COUNT directories) | ✅ Complete |" "$OVERVIEW"
-  sed -i "s| Agents |.*| Agents | $CUSTOM_AGENTS custom subagents | ✅ Complete |" "$OVERVIEW"
-  sed -i "s| Commands |.*| Commands | $COMMANDS_COUNT | ✅ Complete |" "$OVERVIEW"
-  sed -i "s| Tests |.*| Tests | $TESTS_COUNT | ✅ Complete |" "$OVERVIEW"
-  sed -i "s| CI/CD |.*| CI/CD | $WORKFLOWS_COUNT workflows | ✅ Deployed |" "$OVERVIEW"
-  sed -i "s| Scripts |.*| Scripts | $SCRIPTS_COUNT | ✅ Complete |" "$OVERVIEW"
-  sed -i "s| MCP Servers |.*| MCP Servers | $MCP_TOTAL ($MCP_LOCAL local + $MCP_REMOTE remote) | ✅ Configured |" "$OVERVIEW"
+  # Use perl for reliable replacements with special characters
+  perl -pi -e "s/\*\*Last Updated:\*\*.*/\*\*Last Updated:\*\* $TODAY/" "$OVERVIEW"
+  perl -pi -e "s/\*\*Status:\*\*.*/\*\*Status:\*\* $STATUS/" "$OVERVIEW"
+  perl -pi -e "s/\| Skills \|.*$/\| Skills \| $SKILLS_COUNT ($SKILL_DIRS_COUNT directories) \| ✅ Complete \|/" "$OVERVIEW"
+  perl -pi -e "s/\| Agents \|.*$/\| Agents \| $CUSTOM_AGENTS custom subagents \| ✅ Complete \|/" "$OVERVIEW"
+  perl -pi -e "s/\| Commands \|.*$/\| Commands \| $COMMANDS_COUNT \| ✅ Complete \|/" "$OVERVIEW"
+  perl -pi -e "s/\| Tests \|.*$/\| Tests \| $TESTS_COUNT \| ✅ Complete \|/" "$OVERVIEW"
+  perl -pi -e "s/\| CI\/CD \|.*$/\| CI\/CD \| $WORKFLOWS_COUNT workflows \| ✅ Deployed \|/" "$OVERVIEW"
+  perl -pi -e "s/\| Scripts \|.*$/\| Scripts \| $SCRIPTS_COUNT \| ✅ Complete \|/" "$OVERVIEW"
+  perl -pi -e "s/\| MCP Servers \|.*$/\| MCP Servers \| $MCP_TOTAL ($MCP_LOCAL local + $MCP_REMOTE remote) \| ✅ Configured \|/" "$OVERVIEW"
   echo -e "${GREEN}Updated${NC} Overview.md"
 else
   echo -e "${YELLOW}WARN${NC} Overview.md not found, creating..."
@@ -141,34 +142,36 @@ EOF
   echo -e "${GREEN}Created${NC} Overview.md"
 fi
 
+mkdir -p "$DOCS_DIR/03-Skills"
 if [ -f "$SKILLS_INDEX" ]; then
   echo "--- Updating Skills Index ---"
-  sed -i "s|Total Skills:.*|Total Skills: $SKILLS_COUNT|" "$SKILLS_INDEX"
-  sed -i "s|Last Updated:.*|Last Updated: $TODAY|" "$SKILLS_INDEX"
+  perl -pi -e "s/Total Skills:.*/Total Skills: $SKILLS_COUNT/" "$SKILLS_INDEX"
+  perl -pi -e "s/Last Updated:.*/Last Updated: $TODAY/" "$SKILLS_INDEX"
   echo -e "${GREEN}Updated${NC} Skills Index"
 fi
 
 if [ -f "$AGENT_CATALOG" ]; then
   echo "--- Updating Agent Catalog ---"
-  sed -i "s|Total Agents:.*|Total Agents: $CUSTOM_AGENTS|" "$AGENT_CATALOG"
-  sed -i "s|Last Updated:.*|Last Updated: $TODAY|" "$AGENT_CATALOG"
+  perl -pi -e "s/Total Agents:.*/Total Agents: $CUSTOM_AGENTS/" "$AGENT_CATALOG"
+  perl -pi -e "s/Last Updated:.*/Last Updated: $TODAY/" "$AGENT_CATALOG"
   echo -e "${GREEN}Updated${NC} Agent Catalog"
 fi
 
 if [ -f "$COMMAND_CATALOG" ]; then
   echo "--- Updating Command Catalog ---"
-  sed -i "s|Total Commands:.*|Total Commands: $COMMANDS_COUNT|" "$COMMAND_CATALOG"
-  sed -i "s|Last Updated:.*|Last Updated: $TODAY|" "$COMMAND_CATALOG"
+  perl -pi -e "s/Total Commands:.*/Total Commands: $COMMANDS_COUNT/" "$COMMAND_CATALOG"
+  perl -pi -e "s/Last Updated:.*/Last Updated: $TODAY/" "$COMMAND_CATALOG"
   echo -e "${GREEN}Updated${NC} Command Catalog"
 fi
 
 if [ -f "$MCP_CATALOG" ]; then
   echo "--- Updating MCP Catalog ---"
-  sed -i "s|Total MCP Servers:.*|Total MCP Servers: $MCP_TOTAL|" "$MCP_CATALOG"
-  sed -i "s|Last Updated:.*|Last Updated: $TODAY|" "$MCP_CATALOG"
+  perl -pi -e "s/Total MCP Servers:.*/Total MCP Servers: $MCP_TOTAL/" "$MCP_CATALOG"
+  perl -pi -e "s/Last Updated:.*/Last Updated: $TODAY/" "$MCP_CATALOG"
   echo -e "${GREEN}Updated${NC} MCP Catalog"
 fi
 
+mkdir -p "$DOCS_DIR/04-Updates"
 echo "--- Updating Changelog.md ---"
 if [ -n "$CHANGES_SUMMARY" ]; then
   TODAY=$(get_today)
@@ -216,7 +219,7 @@ fi
 
 echo "--- Syncing to Obsidian ---"
 if [ -d "$OBSIDIAN_DIR" ]; then
-  rsync -av --delete "$DOCS_DIR/" "$OBSIDIAN_DIR/" 2>&1 | grep -v "/$" | while read -r line; do
+  rsync -av "$DOCS_DIR/" "$OBSIDIAN_DIR/" 2>&1 | grep -v "/$" | while read -r line; do
     echo "  $line"
   done
   echo -e "${GREEN}Synced${NC} docs/design/ → Obsidian"
