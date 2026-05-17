@@ -57,12 +57,19 @@
 
 ## Phase 5: Config Update
 
-- [ ] Update `~/.config/opencode/opencode.json`:
-  - [ ] Add Postman MCP
-  - [ ] Add Atlassian MCP
-  - [ ] Add Redis rules to `instructions`
-  - [ ] Add skill permissions
-  - [ ] Add custom agent configs
+- [x] Update `~/.config/opencode/opencode.json`:
+  - [x] Add Postman MCP
+  - [x] Add Atlassian MCP
+  - [x] Add Redis rules to `instructions` (now in `skills/redis-development/rules/*.md`)
+  - [x] Add skill permissions
+  - [x] Add custom agent configs
+
+## Phase 8: Redis Skill
+
+- [x] Copy `redis-development` from Cursor plugin cache to `~/.config/opencode/skills/redis-development/`
+- [x] Update instructions glob to point to new location
+- [x] Sync to git repo (sanitized)
+- [x] 37 rule files across 11 categories
 
 ## Phase 6: Verification
 

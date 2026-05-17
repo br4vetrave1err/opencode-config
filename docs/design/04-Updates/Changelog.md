@@ -32,6 +32,22 @@ All changes to the AI agent configuration, tracked by date.
 
 ---
 
+## 2026-05-17: Consolidation — Phase 3 (Redis Skill + Playwright Tests)
+
+### What Changed
+- Copied `redis-development` skill from Cursor plugin cache to `~/.config/opencode/skills/redis-development/`
+- Updated instructions glob in `opencode.json` and `AGENTS.md` to point to new location
+- Created playwright-cli test suite (`skills/playwright-cli/tests/run-tests.sh`)
+- All 36 playwright-cli tests passing
+- Updated Obsidian docs and git repo
+
+### Final State
+- **Skills:** 37 total (36 previous + redis-development)
+- **Redis Rules:** 37 rule files across 11 categories, now in `skills/redis-development/rules/`
+- **Playwright Tests:** 36/36 passing across 15 command categories
+
+---
+
 ## 2026-05-17: Consolidation — Phase 2 (Execution Complete)
 
 ### What Changed
