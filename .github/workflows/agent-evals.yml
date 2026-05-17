@@ -1,0 +1,43 @@
+name: Agent Evals
+
+on:
+  workflow_dispatch:
+    inputs:
+      eval_type:
+        description: "Type of eval to run"
+        required: true
+        default: "full"
+        type: choice
+        options:
+          - full
+          - smoke
+          - mcp
+      skill_filter:
+        description: "Filter skills by name (regex)"
+        required: false
+        type: string
+
+jobs:
+  evals:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Run Config Validation
+        run: bash scripts/validate-config.sh .
+
+      - name: Run Secrets Scan
+        run: bash scripts/secrets-scan.sh .
+
+      - name: Run Skill Tests
+        run: bash tests/run-all-tests.sh
+
+      - name: Upload Results
+        uses: actions/upload-artifact@v4
+        with:
+          name: eval-results
+          path: tests/results/
+        if: always()

@@ -1,0 +1,32 @@
+name: Validate Config
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - "opencode.json"
+      - "skills/**"
+      - "agents/**"
+      - "commands/**"
+  pull_request:
+    branches: [main]
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install jq
+        run: sudo apt-get install -y jq
+
+      - name: Run Config Validation
+        run: bash scripts/validate-config.sh .
+
+      - name: Run Secrets Scan
+        run: bash scripts/secrets-scan.sh .
+
+      - name: Run All Tests
+        run: bash tests/run-all-tests.sh
