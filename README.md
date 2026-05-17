@@ -1,38 +1,36 @@
 # Opencode Agent Configuration
 
-Consolidated AI agent configuration for OpenCode. All skills, agents, commands, and MCP servers managed under `~/.config/opencode/`.
+Consolidated AI agent configuration for OpenCode. Mirrors `~/.config/opencode/` with additional docs and scripts.
 
 ## Structure
 
 ```
 opencode-config/
-├── opencode.json          # MCP (5 servers), agents (3), permissions
-├── skills/                # 41 skills total
-│   ├── agent-ready-apis/      # Postman: API agent-readiness
-│   ├── postman-knowledge/     # Postman: MCP tool guidance
-│   ├── postman-routing/       # Postman: Auto-routing
-│   ├── capture-tasks-from-meeting-notes/  # Atlassian: Meeting → Jira
-│   ├── generate-status-report/            # Atlassian: Jira → Confluence
-│   ├── spec-to-backlog/                   # Atlassian: Confluence → Jira
-│   ├── search-company-knowledge/          # Atlassian: Cross-system search
-│   ├── jira-triage-issue/                 # Atlassian: Bug triage
-│   ├── create-rule/                       # Cursor-adapted: Rule creation
-│   ├── create-skill/                      # Cursor-adapted: Skill creation
-│   ├── create-subagent/                   # Cursor-adapted: Agent creation
-│   ├── opencode-sdk/                      # Cursor-adapted: SDK guide
-│   ├── update-opencode-config/            # Cursor-adapted: Config editing
-│   ├── update-opencode-settings/          # Cursor-adapted: TUI settings
-│   ├── autonomous-agent/                  # Custom: Autonomous operations
-│   ├── continuous-monitor/                # Custom: Docker monitoring
-│   ├── docker-monitor/                    # Custom: Container debugging
-│   ├── output-validator/                  # Custom: Output validation
-│   ├── problem-planner/                   # Custom: Problem decomposition
-│   └── [22 original skills...]
-├── agents/                # 3 custom subagents
-│   ├── readiness-analyzer.md  # API agent-readiness scanner
-│   ├── pr-babysitter.md       # PR merge-readiness loop
-│   └── split-to-prs.md        # Split changes into PRs
-├── commands/              # 8 Postman workflow commands
+├── opencode.json              ← Main config (MCP, agents, permissions)
+├── skills/                    ← 36 skills (mirrors ~/.config/opencode/skills/)
+│   ├── caveman/               ← Original (21 skills from ~/.agents/skills/)
+│   ├── design-an-interface/
+│   ├── ...
+│   ├── playwright-cli/        ← From Claude Code compatibility
+│   ├── agent-ready-apis/      ← From Postman plugin (3)
+│   ├── postman-knowledge/
+│   ├── postman-routing/
+│   ├── capture-tasks-from-meeting-notes/ ← From Atlassian plugin (5)
+│   ├── generate-status-report/
+│   ├── spec-to-backlog/
+│   ├── search-company-knowledge/
+│   ├── jira-triage-issue/
+│   ├── create-rule/           ← From Cursor built-in (6)
+│   ├── create-skill/
+│   ├── create-subagent/
+│   ├── opencode-sdk/
+│   ├── update-opencode-config/
+│   └── update-opencode-settings/
+├── agents/                    ← 3 custom subagents
+│   ├── readiness-analyzer.md
+│   ├── pr-babysitter.md
+│   └── split-to-prs.md
+├── commands/                  ← 8 Postman workflow commands
 │   ├── postman-sync.md
 │   ├── postman-codegen.md
 │   ├── postman-search.md
@@ -41,17 +39,22 @@ opencode-config/
 │   ├── postman-docs.md
 │   ├── postman-security.md
 │   └── postman-setup.md
-├── scripts/               # Automation scripts
-│   ├── sync-obsidian.sh       # Linux sync
-│   ├── sync-obsidian.ps1      # Windows sync
-│   ├── setup-cron.sh          # Linux scheduler
-│   ├── setup-task-scheduler.ps1 # Windows scheduler
-│   ├── monitor.sh             # Docker monitor (Linux)
-│   └── monitor.ps1            # Docker monitor (Windows)
 ├── docs/
-│   ├── SKILLS_INDEX.md        # Skills guide
-│   └── updates/               # Dated changelog
-└── README.md
+│   └── design/                ← Architecture & design docs (from Obsidian)
+│       ├── 00-Overview.md
+│       ├── 01-Architecture/   ← 8 files (system, directory, MCP, agent, etc.)
+│       ├── 02-Migration/      ← 4 files (plan, checklist, conflicts)
+│       ├── 03-Skills/         ← 5 files (catalogs for skills, agents, commands, MCP)
+│       ├── 04-Updates/        ← Changelog
+│       └── 05-Reference/      ← 3 files (quick-start, auth, reference index)
+├── scripts/                   ← Automation (sync Obsidian docs to repo)
+│   ├── sync-obsidian.sh       ← Linux: sync Obsidian → docs/design/
+│   ├── sync-obsidian.ps1      ← Windows: sync Obsidian → docs/design/
+│   ├── setup-cron.sh          ← Linux: schedule daily sync
+│   └── setup-task-scheduler.ps1 ← Windows: schedule daily sync
+├── README.md
+├── .env.example
+└── .gitignore
 ```
 
 ## MCP Servers
@@ -61,12 +64,12 @@ opencode-config/
 | confluence | local | PAT | ✅ Active |
 | obsidian | local | None | ✅ Active |
 | github | local | Token | ✅ Active |
-| postman | remote | OAuth 2.1 | ⬜ Pending auth |
-| atlassian | remote | OAuth 2.1 (PKCE) | ⬜ Pending auth |
+| postman | remote | OAuth 2.1 | ✅ Authenticated |
+| atlassian | remote | OAuth 2.1 (PKCE) | ✅ Authenticated |
 
-## Skills Overview
+## Skills
 
-41 skills across 5 categories:
+36 skills across 5 categories:
 
 | Category | Count | Examples |
 |----------|-------|----------|
@@ -74,9 +77,9 @@ opencode-config/
 | Development | 7 | tdd, triage-issue, improve-codebase-architecture |
 | API & Postman | 6 | postman-sync, postman-codegen, agent-ready-apis |
 | Project Management | 5 | capture-tasks-from-meeting-notes, generate-status-report |
-| Tooling & Knowledge | 15 | obsidian-vault, write-a-skill, caveman |
+| Tooling & Knowledge | 10 | obsidian-vault, write-a-skill, caveman |
 
-See [docs/SKILLS_INDEX.md](docs/SKILLS_INDEX.md) for full catalog.
+See [docs/design/03-Skills/Skills-Index.md](docs/design/03-Skills/Skills-Index.md) for quick reference.
 
 ## Agents
 
@@ -116,32 +119,22 @@ cp ~/opencode-config/opencode.json ~/.config/opencode/opencode.json
 # Edit with real tokens (this repo has placeholders)
 ```
 
-### 3. Install Skills
+### 3. Install Skills, Agents, Commands
 
 ```bash
 cp -r ~/opencode-config/skills/* ~/.config/opencode/skills/
-```
-
-### 4. Install Agents
-
-```bash
 cp -r ~/opencode-config/agents/* ~/.config/opencode/agents/
-```
-
-### 5. Install Commands
-
-```bash
 cp -r ~/opencode-config/commands/* ~/.config/opencode/commands/
 ```
 
-### 6. Authenticate Remote MCP Servers
+### 4. Authenticate Remote MCP Servers
 
 ```bash
 opencode mcp auth postman
 opencode mcp auth atlassian
 ```
 
-### 7. Verify
+### 5. Verify
 
 ```bash
 opencode mcp list
@@ -172,9 +165,21 @@ cp -r commands/* ~/.config/opencode/commands/
 cp opencode.json ~/.config/opencode/
 ```
 
+## Obsidian Vault Sync
+
+Design docs are maintained in Obsidian (`agent config/`) and synced to this repo as backup:
+
+```bash
+# Manual sync
+./scripts/sync-obsidian.sh
+
+# Set up daily sync at 6 AM
+./scripts/setup-cron.sh
+```
+
 ## Changelog
 
-See [docs/updates/](docs/updates/) for dated change logs.
+See [docs/design/04-Updates/Changelog.md](docs/design/04-Updates/Changelog.md) for dated change logs.
 
 ## Notes
 

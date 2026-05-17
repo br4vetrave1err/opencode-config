@@ -1,18 +1,20 @@
 #!/bin/bash
-# Obsidian to GitHub Sync Script
+# Obsidian Design Docs to GitHub Sync Script
+# Syncs Obsidian "agent config/" folder to repo's docs/design/
 # Runs every 24 hours via cron
 # Usage: ./sync-obsidian.sh
 
-VAULT_PATH="/home/br4vetrave1er/Documents/br4vetrave1er notes"
-REPO_PATH="/home/br4vetrave1er/Desktop/projects/opencode-config/skills/obsidian-vault"
-GITHUB_REPO="https://github.com/br4vetrave1err/opencode-config.git"
+VAULT_DOCS="/home/br4vetrave1er/Documents/br4vetrave1er notes/agent config"
+REPO_PATH="/home/br4vetrave1er/Desktop/projects/opencode-config"
+REPO_DOCS="$REPO_PATH/docs/design"
+GITHUB_REPO="https://github.com/br4vetrave1er/opencode-config.git"
 
-echo "=== Obsidian Vault Sync ==="
+echo "=== Obsidian Design Docs Sync ==="
 echo "Started at: $(date)"
 
-# Check if vault exists
-if [ ! -d "$VAULT_PATH" ]; then
-    echo "ERROR: Vault not found at $VAULT_PATH"
+# Check if vault docs exist
+if [ ! -d "$VAULT_DOCS" ]; then
+    echo "ERROR: Obsidian docs not found at $VAULT_DOCS"
     exit 1
 fi
 
@@ -20,12 +22,17 @@ fi
 TEMP_DIR=$(mktemp -d)
 trap "rm -rf $TEMP_DIR" EXIT
 
-# Copy vault contents
-echo "Copying vault contents..."
-rsync -av --exclude='.obsidian' --exclude='.git' --exclude='.trash' "$VAULT_PATH/" "$TEMP_DIR/"
+# Copy Obsidian docs to temp
+echo "Copying Obsidian docs..."
+rsync -av --exclude='.obsidian' --exclude='.git' --exclude='.trash' "$VAULT_DOCS/" "$TEMP_DIR/"
 
 # Navigate to repo
 cd "$REPO_PATH" || exit 1
+
+# Copy to docs/design/
+rm -rf "$REPO_DOCS"
+mkdir -p "$REPO_DOCS"
+cp -r "$TEMP_DIR/"* "$REPO_DOCS/"
 
 # Check for changes
 if git diff --quiet && git diff --cached --quiet; then
@@ -37,7 +44,7 @@ else
     git add -A
 
     # Commit with timestamp
-    git commit -m "Sync Obsidian vault - $(date '+%Y-%m-%d %H:%M')" 2>/dev/null || echo "Nothing to commit"
+    git commit -m "Sync Obsidian design docs - $(date '+%Y-%m-%d %H:%M')" 2>/dev/null || echo "Nothing to commit"
 
     # Push
     git push origin main

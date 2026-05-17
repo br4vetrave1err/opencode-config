@@ -1,21 +1,23 @@
-# Obsidian to GitHub Sync Script
+# Obsidian Design Docs to GitHub Sync Script
 # Runs every 24 hours via Windows Task Scheduler
+# Syncs Obsidian "agent config/" folder to repo's docs/design/
 # Save as sync-obsidian.ps1
 
 param(
-    [string]$VaultPath = "$env:USERPROFILE\Documents\br4vetrave1er notes",
-    [string]$RepoPath = "$env:USERPROFILE\Desktop\projects\opencode-config\skills\obsidian-vault",
-    [string]$GithubRepo = "https://github.com/br4vetrave1err/opencode-config.git"
+    [string]$VaultDocs = "$env:USERPROFILE\Documents\br4vetrave1er notes\agent config",
+    [string]$RepoPath = "$env:USERPROFILE\Desktop\projects\opencode-config",
+    [string]$RepoDocs = "$env:USERPROFILE\Desktop\projects\opencode-config\docs\design",
+    [string]$GithubRepo = "https://github.com/br4vetrave1er/opencode-config.git"
 )
 
 $ErrorActionPreference = "Stop"
 
-Write-Host "=== Obsidian Vault Sync ==="
+Write-Host "=== Obsidian Design Docs Sync ==="
 Write-Host "Started at: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
 
-# Check if vault exists
-if (-not (Test-Path $VaultPath)) {
-    Write-Host "ERROR: Vault not found at $VaultPath"
+# Check if vault docs exist
+if (-not (Test-Path $VaultDocs)) {
+    Write-Host "ERROR: Obsidian docs not found at $VaultDocs"
     exit 1
 }
 
@@ -24,10 +26,10 @@ $TempDir = [System.IO.Path]::GetTempPath() + "obsidian-sync-" + (Get-Random)
 New-Item -ItemType Directory -Path $TempDir -Force | Out-Null
 
 try {
-    # Copy vault contents (exclude obsidian, git, trash folders)
-    Write-Host "Copying vault contents..."
-    Get-ChildItem -Path $VaultPath -Exclude '.obsidian', '.git', '.trash' -Recurse | ForEach-Object {
-        $Destination = $_.FullName.Replace($VaultPath, $TempDir)
+    # Copy Obsidian docs to temp (exclude obsidian, git, trash folders)
+    Write-Host "Copying Obsidian docs..."
+    Get-ChildItem -Path $VaultDocs -Exclude '.obsidian', '.git', '.trash' -Recurse | ForEach-Object {
+        $Destination = $_.FullName.Replace($VaultDocs, $TempDir)
         if ($_.PSIsContainer) {
             if (-not (Test-Path $Destination)) {
                 New-Item -ItemType Directory -Path $Destination -Force | Out-Null
@@ -44,6 +46,13 @@ try {
     # Navigate to repo
     Set-Location $RepoPath
 
+    # Copy to docs/design/
+    if (Test-Path $RepoDocs) {
+        Remove-Item -Path $RepoDocs -Recurse -Force
+    }
+    New-Item -ItemType Directory -Path $RepoDocs -Force | Out-Null
+    Copy-Item -Path "$TempDir\*" -Destination $RepoDocs -Recurse -Force
+
     # Check for changes
     $HasChanges = (git status --porcelain) -ne ""
 
@@ -56,7 +65,7 @@ try {
         git add -A
 
         # Commit with timestamp
-        $CommitMessage = "Sync Obsidian vault - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
+        $CommitMessage = "Sync Obsidian design docs - $(Get-Date -Format 'yyyy-MM-dd HH:mm')"
         git commit -m $CommitMessage 2>$null
         if ($LASTEXITCODE -ne 0) {
             Write-Host "Nothing to commit"

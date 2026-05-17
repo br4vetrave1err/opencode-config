@@ -1,9 +1,10 @@
 # Windows Task Scheduler Setup
 # Run as Administrator in PowerShell
+# Syncs Obsidian "agent config/" to repo docs/design/
 
-$TASK_NAME = "ObsidianVaultSync"
+$TASK_NAME = "ObsidianDesignDocsSync"
 $SCRIPT_PATH = "$env:USERPROFILE\Desktop\projects\opencode-config\scripts\sync-obsidian.ps1"
-$LOG_PATH = "$env:USERPROFILE\.obsidian-sync.log"
+$LOG_PATH = "$env:USERPROFILE\.obsidian-design-docs-sync.log"
 
 # Check if running as admin
 $isAdmin = ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
